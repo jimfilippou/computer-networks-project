@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2020
+ * Kougioumtzi Chrysa - p3150078@aueb.gr
+ * Filippou Dimitrios - p3160253@aueb.gr
+ * Stergiou Nikolaos - p3120176@aueb.gr
+ */
+
+package models
+
+class Client {
+
+    val clientID: String? = null;
+    val followers: MutableList<Client> = mutableListOf<Client>();
+
+}

@@ -1,10 +1,21 @@
+/*
+ * Copyright (c) 2020
+ * Kougioumtzi Chrysa - p3150078@aueb.gr
+ * Filippou Dimitrios - p3160253@aueb.gr
+ * Stergiou Nikolaos - p3120176@aueb.gr
+ */
+
 import models.Client
 
-fun main() {
+object Main {
 
-    // Here we experiment :D
+    @JvmStatic
+    fun main(args: Array<String>) {
 
-    var c = Client()
+        // Here we experiment :D
 
-    println(c)
+        Client().also {
+            println(it)
+        }
+    }
 }
