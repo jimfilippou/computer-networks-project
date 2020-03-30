@@ -9,7 +9,15 @@ package models
 
 class Client {
 
-    val clientID: String? = null;
-    val followers: MutableList<Client> = mutableListOf<Client>();
+    private var _clientID: Int? = null;
+    private val _followerIDs: MutableList<Int> = mutableListOf<Int>();
+
+    constructor(id: Int) {
+        this._clientID = id;
+    }
+
+    public fun addFollower(followerID: Int) {
+        this._followerIDs.add(followerID);
+    }
 
 }
