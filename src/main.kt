@@ -5,17 +5,23 @@
  * Stergiou Nikolaos - p3120176@aueb.gr
  */
 
+import handlers.ClientHandler
+import handlers.ServerHandler
 import models.Client
+import models.Server
 
 object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        // Here we experiment :D
+        val serverInfo = Server("192.168.1.148", 8080);
+        val server = ServerHandler(serverInfo);
 
-        Client().also {
-            println(it)
-        }
+        val clientInfo = Client()
+        val client = ClientHandler(clientInfo);
+
+        server.start()
+
     }
 }
