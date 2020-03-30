@@ -9,7 +9,12 @@ package models
 
 class Server {
 
-    val port: Int = 0
-    val ip: String? = null
+    var port: Int = 0;
+    var ip: String = "";
+
+    constructor(ip: String, port: Int){
+        this.ip = ip;
+        this.port = port;
+    }
 
 }
