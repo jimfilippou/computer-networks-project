@@ -14,11 +14,11 @@ import java.util.*
 /**
  * This class has no useful logic; it's just a documentation example.
  *
- * @param file the file which contains the graph.
+ * @param dataFile the file which contains the graph.
  * @throws NullPointerException
  * @return A list of clients.
  */
-fun FetchClients(dataFile: String = "/data/graph.txt"): List<Client> {
+fun fetchClients(dataFile: String = "/data/graph.txt"): List<Client> {
 
     var clients: MutableList<Client> = mutableListOf<Client>()
     val projectDir: String = File("").absolutePath;

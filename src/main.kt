@@ -5,11 +5,8 @@
  * Stergiou Nikolaos - p3120176@aueb.gr
  */
 
-import handlers.ClientHandler
-import handlers.ServerHandler
-import helpers.FetchClients
+import helpers.fetchClients
 import models.Client
-import models.Server
 
 object Main {
 
@@ -24,7 +21,7 @@ object Main {
 //
 //        server.start()
 
-        val clients: List<Client> = FetchClients();
+        val clients: List<Client> = fetchClients();
 
         print(clients)
 
