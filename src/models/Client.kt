@@ -5,14 +5,13 @@
 
 package models
 
-import com.sun.xml.internal.ws.developer.Serialization
 import enums.PacketType
 import factories.PacketFactory
 import helpers.sendToServer
 
-class Client {
+class Client(id: Int = -1) {
 
-    var id: Int? = null;
+    var id: Int = id
     private val _followerIDs: MutableList<Int> = mutableListOf<Int>();
 
     fun addFollower(followerID: Int) {
@@ -22,7 +21,7 @@ class Client {
     fun register(where: Server) {
         val factory = PacketFactory()
         val packet: Packet = factory.makePacket(PacketType.REGISTRATION)
-        packet.payload = "SASASA"
+        packet.payload = this.id
         sendToServer(packet, this, where)
     }
 

@@ -5,6 +5,7 @@
 
 package handlers
 
+import helpers.Logger
 import models.Packet
 import models.Server
 import java.io.ObjectInputStream
@@ -23,17 +24,14 @@ class ServerHandler(private val server: Server) : Thread() {
         try {
             address = InetAddress.getByName(this.server.ip);
             providerSocket = ServerSocket(this.server.port, 50, address);
-            println("$server Server started");
+            Logger.info("$server -> started listening");
 
             while (true) {
                 connection = providerSocket.accept();
                 val out = ObjectOutputStream(connection.getOutputStream());
                 val input = ObjectInputStream(connection.getInputStream());
                 val incoming = input.readObject() as Packet;
-                println("$server Received -> $incoming");
-                synchronized(this) {
-//                    print(incoming)
-                }
+                synchronized(this) { server.receivePacket(incoming) }
                 input.close()
                 out.close()
                 connection.close()

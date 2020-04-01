@@ -18,7 +18,7 @@ fun sendToServer(payload: Packet, sender: Client, receiver: Server): Unit {
         val requestSocket = Socket(InetAddress.getByName(receiver.ip), receiver.port)
         val out: ObjectOutputStream
         out = ObjectOutputStream(requestSocket.getOutputStream())
-        println("Sending $payload to $receiver.")
+        Logger.debug("Sending $payload to $receiver.")
         out.writeUnshared(payload)
         out.flush()
     } catch (err: Exception) {

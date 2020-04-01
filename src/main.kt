@@ -27,8 +27,7 @@ object Main {
             "clients" -> {
                 val clients: List<Client> = fetchClients();
                 for (client in clients) {
-                    val clientInfo = Client()
-                    val service = ClientHandler(clientInfo, server = Server(ip, port));
+                    val service = ClientHandler(client, server = Server(ip, port));
                     service.start()
                 }
             }
