@@ -20,7 +20,7 @@ class Client(id: Int = -1) {
 
     fun register(where: Server) {
         val factory = PacketFactory()
-        val packet: Packet = factory.makePacket(PacketType.REGISTRATION)
+        val packet: RegistrationPacket = factory.makePacket(PacketType.REGISTRATION) as RegistrationPacket
         packet.payload = this.id
         sendToServer(packet, this, where)
     }

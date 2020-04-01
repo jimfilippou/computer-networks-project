@@ -9,7 +9,6 @@ import enums.PacketType
 
 interface Packet {
 
-    val type: PacketType
     val payload: Any?
 
 }

@@ -5,8 +5,8 @@
 
 package helpers
 
+import interfaces.Packet
 import models.Client
-import models.Packet
 import models.Server
 import java.io.ObjectOutputStream
 import java.net.InetAddress

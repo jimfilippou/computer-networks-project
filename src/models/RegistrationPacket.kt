@@ -9,7 +9,7 @@ import enums.PacketType
 import interfaces.Packet
 import java.io.Serializable
 
-class Packet(override val type: PacketType) : Serializable, Packet {
+class RegistrationPacket: Serializable, Packet {
 
     override var payload: Serializable? = null;
 
@@ -18,8 +18,7 @@ class Packet(override val type: PacketType) : Serializable, Packet {
     }
 
     override fun toString(): String {
-        return "Packet: \"${this.hashCode() % 1000}\""
+        return "Registration packet: \"${this.hashCode() % 1000}\""
     }
-
 
 }

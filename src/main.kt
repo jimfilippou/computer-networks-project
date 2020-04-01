@@ -6,6 +6,7 @@
 import handlers.ClientHandler
 import handlers.ServerHandler
 import helpers.fetchClients
+import helpers.getIPv4Address
 import models.Client
 import models.Server
 
@@ -15,7 +16,7 @@ object Main {
     fun main(args: Array<String>) {
 
         // $ ~ ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'
-        val ip = "192.168.1.148"
+        val ip = getIPv4Address()
         val port = 9090
 
         when (args[0]) {

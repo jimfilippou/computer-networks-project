@@ -6,7 +6,8 @@
 package factories
 
 import enums.PacketType
-import models.Packet
+import interfaces.Packet
+import models.RegistrationPacket
 import java.lang.Exception
 
 class PacketFactory {
@@ -14,7 +15,7 @@ class PacketFactory {
     @Throws(Exception::class)
     fun makePacket(type: PacketType): Packet {
         return when (type) {
-            PacketType.REGISTRATION -> Packet(PacketType.REGISTRATION)
+            PacketType.REGISTRATION -> RegistrationPacket()
             else -> throw Exception("Type is not provided!")
         }
     }

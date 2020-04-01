@@ -5,8 +5,8 @@
 
 package models
 
-import enums.PacketType
 import helpers.Logger
+import interfaces.Packet
 
 class Server {
 
@@ -19,10 +19,10 @@ class Server {
         this.port = port;
     }
 
-    fun receivePacket(packet: Packet) {
-        when (packet.type) {
-            PacketType.REGISTRATION -> {
-                Logger.info("Received registration event from -> ${packet.payload}")
+    fun receivePacket(packet: Any) {
+        when (packet) {
+            is RegistrationPacket -> {
+                Logger.info("Received registration packet from -> ${packet.payload}")
                 this.registeredUserIDs.add(packet.payload as Int)
             }
         }
