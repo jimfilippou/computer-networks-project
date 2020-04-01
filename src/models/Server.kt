@@ -1,20 +1,24 @@
 /*
  * Copyright (c) 2020
- * Kougioumtzi Chrysa - p3150078@aueb.gr
- * Filippou Dimitrios - p3160253@aueb.gr
- * Stergiou Nikolaos - p3120176@aueb.gr
+ * Dimitrios Filippou・p3160253@aueb.gr
  */
 
 package models
 
 class Server {
 
-    var port: Int = 0;
-    var ip: String = "";
+    var port: Int
+    var ip: String
+    private var counter: Int = 0
 
-    constructor(ip: String, port: Int){
+    constructor(ip: String, port: Int) {
         this.ip = ip;
         this.port = port;
     }
+
+    override fun toString(): String {
+        return "Server(port=$port, ip='$ip', counter=$counter)"
+    }
+
 
 }

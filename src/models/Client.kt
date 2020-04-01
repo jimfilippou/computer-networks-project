@@ -1,23 +1,29 @@
 /*
  * Copyright (c) 2020
- * Kougioumtzi Chrysa - p3150078@aueb.gr
- * Filippou Dimitrios - p3160253@aueb.gr
- * Stergiou Nikolaos - p3120176@aueb.gr
+ * Dimitrios Filippou・p3160253@aueb.gr
  */
 
 package models
 
+import com.sun.xml.internal.ws.developer.Serialization
+import enums.PacketType
+import factories.PacketFactory
+import helpers.sendToServer
+
 class Client {
 
-    private var _clientID: Int? = null;
+    var id: Int? = null;
     private val _followerIDs: MutableList<Int> = mutableListOf<Int>();
 
-    constructor(id: Int) {
-        this._clientID = id;
+    fun addFollower(followerID: Int) {
+        this._followerIDs.add(followerID);
     }
 
-    public fun addFollower(followerID: Int) {
-        this._followerIDs.add(followerID);
+    fun register(where: Server) {
+        val factory = PacketFactory()
+        val packet: Packet = factory.makePacket(PacketType.REGISTRATION)
+        packet.payload = this
+        sendToServer(packet, this, where)
     }
 
 }

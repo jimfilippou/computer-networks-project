@@ -1,29 +1,39 @@
 /*
  * Copyright (c) 2020
- * Kougioumtzi Chrysa - p3150078@aueb.gr
- * Filippou Dimitrios - p3160253@aueb.gr
- * Stergiou Nikolaos - p3120176@aueb.gr
+ * Dimitrios Filippou・p3160253@aueb.gr
  */
 
+import handlers.ClientHandler
+import handlers.ServerHandler
 import helpers.fetchClients
 import models.Client
+import models.Server
 
 object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-//
-//        val serverInfo = Server("192.168.1.148", 8080);
-//        val server = ServerHandler(serverInfo);
-//
-//        val clientInfo = Client()
-//        val client = ClientHandler(clientInfo);
-//
-//        server.start()
 
-        val clients: List<Client> = fetchClients();
+        // $ ~ ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'
+        val ip = "192.168.1.148"
+        val port = 9090
 
-        print(clients)
+        when (args[0]) {
+            "server" -> {
+                val serverInfo = Server(ip, port);
+                val server = ServerHandler(serverInfo);
+                server.start()
+            }
+            "clients" -> {
+                val clients: List<Client> = fetchClients();
+                for (client in clients) {
+                    val clientInfo = Client()
+                    val service = ClientHandler(clientInfo, server = Server(ip, port));
+                    service.start()
+                }
+            }
+        }
+
 
     }
 

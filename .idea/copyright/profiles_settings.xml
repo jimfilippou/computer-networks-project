@@ -1,7 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="diktya-omada">
+  <settings>
     <module2copyright>
-      <element module="All" copyright="diktya-omada" />
+      <element module="All" copyright="me" />
     </module2copyright>
   </settings>
 </component>

@@ -1,8 +1,6 @@
 /*
  * Copyright (c) 2020
- * Kougioumtzi Chrysa - p3150078@aueb.gr
- * Filippou Dimitrios - p3160253@aueb.gr
- * Stergiou Nikolaos - p3120176@aueb.gr
+ * Dimitrios Filippou・p3160253@aueb.gr
  */
 
 package helpers
@@ -29,7 +27,8 @@ fun fetchClients(dataFile: String = "/data/graph.txt"): List<Client> {
     while (scanner.hasNextLine()) {
         val data: String = scanner.nextLine();
         // Example input -> it: "1 3 4 5 45 75"
-        val client: Client = Client(data[0].toInt());
+        val client: Client = Client();
+        client.id = data[0].toInt()
         val iterable: String = data.substring(1);
         for (follower in iterable.trim().split(" ")) {
             client.addFollower(follower.toInt());

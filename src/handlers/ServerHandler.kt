@@ -1,12 +1,11 @@
 /*
  * Copyright (c) 2020
- * Kougioumtzi Chrysa - p3150078@aueb.gr
- * Filippou Dimitrios - p3160253@aueb.gr
- * Stergiou Nikolaos - p3120176@aueb.gr
+ * Dimitrios Filippou・p3160253@aueb.gr
  */
 
 package handlers
 
+import models.Packet
 import models.Server
 import models.Wrapper
 import java.io.ObjectInputStream
@@ -29,12 +28,11 @@ class ServerHandler(private val server: Server) : Thread() {
             connection = providerSocket.accept();
             val out = ObjectOutputStream(connection.getOutputStream());
             val input = ObjectInputStream(connection.getInputStream());
-            val incoming = input.readObject() as Wrapper<*>;
-            println("$server Received -> ${incoming.data!!}");
+
+            var incoming = input.readObject() as Packet;
+            println("$server Received -> ${incoming!!}");
             synchronized(this) {
-//                if (incoming.data is Broker) {
-//                    this.publisher.brokers.add(incoming.data as Broker)
-//                }
+                print(incoming)
             }
             input.close()
             out.close()
