@@ -7,7 +7,6 @@ package handlers
 
 import models.Packet
 import models.Server
-import models.Wrapper
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.lang.Exception
@@ -24,19 +23,22 @@ class ServerHandler(private val server: Server) : Thread() {
         try {
             address = InetAddress.getByName(this.server.ip);
             providerSocket = ServerSocket(this.server.port, 50, address);
-            println(this.server.toString() + " Server started");
-            connection = providerSocket.accept();
-            val out = ObjectOutputStream(connection.getOutputStream());
-            val input = ObjectInputStream(connection.getInputStream());
+            println("$server Server started");
 
-            var incoming = input.readObject() as Packet;
-            println("$server Received -> ${incoming!!}");
-            synchronized(this) {
-                print(incoming)
+            while (true) {
+                connection = providerSocket.accept();
+                val out = ObjectOutputStream(connection.getOutputStream());
+                val input = ObjectInputStream(connection.getInputStream());
+                val incoming = input.readObject() as Packet;
+                println("$server Received -> $incoming");
+                synchronized(this) {
+//                    print(incoming)
+                }
+                input.close()
+                out.close()
+                connection.close()
             }
-            input.close()
-            out.close()
-            connection.close()
+
         } catch (err: Exception) {
             err.printStackTrace();
         }
