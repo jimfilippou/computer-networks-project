@@ -7,6 +7,8 @@ package helpers
 
 import models.Client
 import models.Server
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -51,6 +53,11 @@ fun interpret(server: Server) {
             "register" -> {
                 if (selected == null) continue@loop
                 selected.register(server)
+            }
+            "ls" -> {
+                for (path in Files.list(Paths.get(System.getProperty("user.dir")))) {
+                    println(path)
+                }
             }
             "help" -> {
                 if (selected == null) continue@loop

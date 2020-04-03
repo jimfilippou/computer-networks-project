@@ -8,6 +8,9 @@ package helpers
 import interfaces.Packet
 import models.Client
 import models.Server
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.lang.Exception
 import java.net.ConnectException
@@ -25,11 +28,21 @@ fun sendToServer(payload: Packet, sender: Client, receiver: Server): Unit {
 
     try {
         val requestSocket = Socket(InetAddress.getByName(receiver.ip), receiver.port)
-        val out: ObjectOutputStream
-        out = ObjectOutputStream(requestSocket.getOutputStream())
+        val outgoing: ObjectOutputStream
+        val incoming: ObjectInputStream
+        outgoing = ObjectOutputStream(requestSocket.getOutputStream())
+        incoming = ObjectInputStream(requestSocket.getInputStream())
         Logger.debug("Sending $payload to $receiver.")
-        out.writeUnshared(payload)
-        out.flush()
+        outgoing.writeUnshared(payload)
+        outgoing.flush()
+        Thread.sleep(1000)
+        when (val response = incoming.readObject()) {
+            is Int -> {
+                sender.id = response
+                Logger.debug("Client ID is set to $response from $receiver")
+            }
+            else -> return
+        }
     } catch (err: Exception) {
         when (err) {
             is ConnectException -> Logger.error("$sender tried to connect to $receiver but connection was refused.")

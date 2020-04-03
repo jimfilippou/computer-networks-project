@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream
 
 class Server(var ip: String, var port: Int) {
 
+    private var counter = 0
     private val registeredUserIDs: MutableList<Int> = mutableListOf<Int>()
 
     fun receivePacket(packet: Any, replyTo: ObjectOutputStream) {
@@ -17,7 +18,12 @@ class Server(var ip: String, var port: Int) {
         when (packet) {
             is RegistrationPacket -> {
                 Logger.info("Received registration packet from -> ${packet.payload}")
-                this.registeredUserIDs.add(packet.payload as Int)
+                counter++
+                this.registeredUserIDs.add(counter)
+                Logger.debug("Writing $counter to $replyTo")
+                replyTo.writeObject(counter)
+                // Logger.debug("Closing stream...")
+                // replyTo.close()
             }
         }
     }
