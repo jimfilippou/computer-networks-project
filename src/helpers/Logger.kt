@@ -7,9 +7,10 @@ package helpers
 
 import java.text.SimpleDateFormat
 
-
-
-
+/**
+ * A custom logger because it is easier to debug.
+ * Every function is static and it supports various terminal colors
+ */
 object Logger {
 
     private const val reset = "\u001B[0m"

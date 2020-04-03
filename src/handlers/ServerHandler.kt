@@ -30,7 +30,7 @@ class ServerHandler(private val server: Server) : Thread() {
                 val out = ObjectOutputStream(connection.getOutputStream())
                 val input = ObjectInputStream(connection.getInputStream())
                 val incoming = input.readObject()
-                synchronized(this) { server.receivePacket(incoming) }
+                synchronized(this) { server.receivePacket(incoming, out) }
                 input.close()
                 out.close()
                 connection.close()

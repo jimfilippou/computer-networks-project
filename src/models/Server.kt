@@ -6,12 +6,13 @@
 package models
 
 import helpers.Logger
+import java.io.ObjectOutputStream
 
 class Server(var ip: String, var port: Int) {
 
     private val registeredUserIDs: MutableList<Int> = mutableListOf<Int>()
 
-    fun receivePacket(packet: Any) {
+    fun receivePacket(packet: Any, replyTo: ObjectOutputStream) {
         // TODO: Server must generate IDs for users, as well as passwords
         when (packet) {
             is RegistrationPacket -> {

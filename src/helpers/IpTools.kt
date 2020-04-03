@@ -7,6 +7,12 @@ package helpers
 
 import java.net.*
 
+/**
+ * Reads all network interfaces, picks the IPv4 address
+ *
+ * @throws RuntimeException
+ * @return The LAN IPv4 address
+ */
 @Throws(java.lang.RuntimeException::class)
 fun getIPv4Address(): String {
     try {

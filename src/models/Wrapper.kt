@@ -7,6 +7,7 @@ package models
 
 import java.io.Serializable
 
+
 class Wrapper<T> : Serializable {
 
     var data: T? = null

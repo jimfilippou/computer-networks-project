@@ -14,6 +14,13 @@ import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
 
+/**
+ * Sends a packet to the server
+ *
+ * @param payload the object to send
+ * @param sender who sends the payload object
+ * @param receiver who receives the payload object
+ */
 fun sendToServer(payload: Packet, sender: Client, receiver: Server): Unit {
 
     try {

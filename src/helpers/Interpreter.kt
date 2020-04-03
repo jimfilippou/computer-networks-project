@@ -10,6 +10,12 @@ import models.Server
 import java.util.*
 import kotlin.system.exitProcess
 
+/**
+ * CLI tool to manage clients (EXPERIMENTAL)
+ * This chunk of code is ugly, intentionally
+ *
+ * @param server the server to operate on
+ */
 fun interpret(server: Server) {
 
     val clients: MutableList<Client> = mutableListOf<Client>()

@@ -10,7 +10,7 @@ import java.io.File
 import java.util.*
 
 /**
- * This class has no useful logic; it's just a documentation example.
+ * Reads data graph and returns clients along with their followers
  *
  * @param dataFile the file which contains the graph.
  * @throws NullPointerException
