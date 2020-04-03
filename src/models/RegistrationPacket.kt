@@ -5,7 +5,6 @@
 
 package models
 
-import enums.PacketType
 import interfaces.Packet
 import java.io.Serializable
 

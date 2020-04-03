@@ -6,20 +6,13 @@
 package models
 
 import helpers.Logger
-import interfaces.Packet
 
-class Server {
+class Server(var ip: String, var port: Int) {
 
-    var port: Int
-    var ip: String
     private val registeredUserIDs: MutableList<Int> = mutableListOf<Int>()
 
-    constructor(ip: String, port: Int) {
-        this.ip = ip;
-        this.port = port;
-    }
-
     fun receivePacket(packet: Any) {
+        // TODO: Server must generate IDs for users, as well as passwords
         when (packet) {
             is RegistrationPacket -> {
                 Logger.info("Received registration packet from -> ${packet.payload}")

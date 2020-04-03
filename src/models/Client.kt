@@ -9,13 +9,12 @@ import enums.PacketType
 import factories.PacketFactory
 import helpers.sendToServer
 
-class Client(id: Int = -1) {
+class Client(var id: Int = -1) {
 
-    var id: Int = id
-    private val _followerIDs: MutableList<Int> = mutableListOf<Int>();
+    private val followerIDs: MutableList<Int> = mutableListOf<Int>();
 
     fun addFollower(followerID: Int) {
-        this._followerIDs.add(followerID);
+        this.followerIDs.add(followerID);
     }
 
     fun register(where: Server) {

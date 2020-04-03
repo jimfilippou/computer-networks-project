@@ -5,6 +5,11 @@
 
 package helpers
 
+import java.text.SimpleDateFormat
+
+
+
+
 object Logger {
 
     private const val reset = "\u001B[0m"
@@ -16,8 +21,8 @@ object Logger {
     private const val cyan = "\u001B[36m"
     private const val white = "\u001B[37m"
 
-    private fun timestamp(): Long {
-        return System.currentTimeMillis() % 10000
+    private fun timestamp(): String {
+        return SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(System.currentTimeMillis())
     }
 
     // Info

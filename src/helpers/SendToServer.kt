@@ -9,6 +9,8 @@ import interfaces.Packet
 import models.Client
 import models.Server
 import java.io.ObjectOutputStream
+import java.lang.Exception
+import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
 
@@ -22,8 +24,10 @@ fun sendToServer(payload: Packet, sender: Client, receiver: Server): Unit {
         out.writeUnshared(payload)
         out.flush()
     } catch (err: Exception) {
-        System.err.println("$sender Tried to connect to -> $receiver But an error occurred.")
-        err.printStackTrace()
+        when (err) {
+            is ConnectException -> Logger.error("$sender tried to connect to $receiver but connection was refused.")
+            else -> Logger.error("Something bad happened :/")
+        }
     }
 
 }

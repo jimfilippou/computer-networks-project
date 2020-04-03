@@ -5,10 +5,13 @@
 
 import handlers.ClientHandler
 import handlers.ServerHandler
+import helpers.Logger
 import helpers.fetchClients
 import helpers.getIPv4Address
+import helpers.interpret
 import models.Client
 import models.Server
+import java.util.*
 
 object Main {
 
@@ -31,6 +34,9 @@ object Main {
                     val service = ClientHandler(client, server = Server(ip, port));
                     service.start()
                 }
+            }
+            "interpreter" -> {
+                interpret(Server(ip, port))
             }
         }
 
