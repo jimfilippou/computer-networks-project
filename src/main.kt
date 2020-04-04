@@ -4,14 +4,12 @@
  */
 
 import handlers.ClientHandler
-import handlers.ServerHandler
-import helpers.Logger
+import handlers.ServerConnectionHandler
 import helpers.fetchClients
 import helpers.getIPv4Address
 import helpers.interpret
 import models.Client
 import models.Server
-import java.util.*
 
 object Main {
 
@@ -24,14 +22,14 @@ object Main {
 
         when (args[0]) {
             "server" -> {
-                val serverInfo = Server(ip, port);
-                val server = ServerHandler(serverInfo);
+                val serverInfo = Server(ip, port)
+                val server = ServerConnectionHandler(serverInfo)
                 server.start()
             }
             "clients" -> {
-                val clients: List<Client> = fetchClients();
+                val clients: List<Client> = fetchClients()
                 for (client in clients) {
-                    val service = ClientHandler(client, server = Server(ip, port));
+                    val service = ClientHandler(client, server = Server(ip, port))
                     service.start()
                 }
             }

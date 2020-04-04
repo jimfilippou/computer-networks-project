@@ -26,9 +26,14 @@ object Logger {
         return SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(System.currentTimeMillis())
     }
 
+    // Success
+    fun success(message: String) {
+        println("$green${timestamp()}: $message$reset")
+    }
+
     // Info
     fun info(message: String) {
-        println("$green${timestamp()}: $message$reset")
+        println("$purple${timestamp()}: $message$reset")
     }
 
     // Error

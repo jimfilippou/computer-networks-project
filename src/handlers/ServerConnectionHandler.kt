@@ -13,7 +13,7 @@ import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class ServerHandler(private val server: Server) : Thread() {
+class ServerConnectionHandler(private val server: Server) : Thread() {
 
     override fun run() {
         val providerSocket: ServerSocket
