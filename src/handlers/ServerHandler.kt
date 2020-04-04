@@ -9,7 +9,6 @@ import helpers.Logger
 import models.Server
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.lang.Exception
 import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
@@ -30,7 +29,9 @@ class ServerHandler(private val server: Server) : Thread() {
                 val out = ObjectOutputStream(connection.getOutputStream())
                 val input = ObjectInputStream(connection.getInputStream())
                 val incoming = input.readObject()
-                synchronized(this) { server.receivePacket(incoming, out) }
+                synchronized(this) {
+                    server.receivePacket(incoming, out)
+                }
                 input.close()
                 connection.close()
             }
