@@ -19,12 +19,17 @@ class Server(var ip: String, var port: Int) {
         if (storage.exists() && storage.isDirectory) {
             Logger.debug("Found old server storage files, deleting...")
             if (storage.delete()) {
-                Logger.success("Storage was deleted.")
+                Logger.success("Storage was successfully deleted.")
+                Logger.debug("Creating new storage files...")
+                File("storage").mkdir()
+                File("storage/server").mkdir()
             } else {
                 Logger.error("Storage was not deleted.")
             }
         } else {
+            Logger.debug("Creating new storage files...")
             File("storage").mkdir()
+            File("storage/server").mkdir()
         }
     }
 
@@ -45,7 +50,7 @@ class Server(var ip: String, var port: Int) {
     }
 
     private fun createUserDirectory(uid: Int) {
-        File("storage\\c$uid").mkdir()
+        File("storage/c$uid").mkdir()
     }
 
     override fun toString(): String {
