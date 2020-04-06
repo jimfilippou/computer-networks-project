@@ -8,7 +8,6 @@ package factories
 import enums.PacketType
 import interfaces.Packet
 import models.RegistrationPacket
-import java.lang.Exception
 
 class PacketFactory {
 

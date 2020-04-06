@@ -7,7 +7,6 @@ package helpers
 
 import models.Client
 import models.Server
-import ru.lanwen.verbalregex.VerbalExpression
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -44,10 +43,6 @@ fun interpret(server: Server) {
             }
             "selected" -> {
                 println(selected)
-            }
-            in Regex(extractUseRegexText()) -> {
-                val id = command.split(" ")[1]
-                selected = clients[id.toInt()]
             }
             "use" -> {
                 for ((index, value) in clients.withIndex()) {
@@ -99,14 +94,6 @@ fun interpret(server: Server) {
             else -> print("xd")
         }
     }
-}
-
-fun extractUseRegexText(): String {
-    val k = VerbalExpression.regex()
-        .startOfLine()
-        .then("use ")
-        .anythingBut(" ")
-    return k.toString()
 }
 
 @Throws(IOException::class)

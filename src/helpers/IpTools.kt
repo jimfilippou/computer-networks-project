@@ -5,7 +5,9 @@
 
 package helpers
 
-import java.net.*
+import java.net.Inet4Address
+import java.net.NetworkInterface
+import java.net.SocketException
 
 /**
  * Reads all network interfaces, picks the IPv4 address

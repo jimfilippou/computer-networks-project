@@ -3,9 +3,9 @@
  * Dimitrios Filippou・p3160253@aueb.gr
  */
 
-package handlers;
+package handlers
 
-import models.Client;
+import models.Client
 import models.Server
 
 class ClientHandler(private val client: Client, private val server: Server) : Thread() {
