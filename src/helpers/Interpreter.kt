@@ -34,7 +34,7 @@ fun interpret(server: Server) {
         }
         val input = Scanner(System.`in`)
         var command: String?
-        command = input.next()
+        command = input.nextLine()
         when (command) {
             "new" -> {
                 val c = Client()
@@ -44,14 +44,14 @@ fun interpret(server: Server) {
             "selected" -> {
                 println(selected)
             }
-            "use" -> {
-                for ((index, value) in clients.withIndex()) {
-                    println("[$index] -> $value")
+            in Regex("^use\\s\\d+") -> {
+                val index = command.split(" ")[1].toInt()
+                try {
+                    selected = clients[index]
+                } catch (err: IndexOutOfBoundsException) {
+                    Logger.warn("Index was outside the bounds, recovering...")
+                    continue@loop
                 }
-                print("Choose client using ID: ")
-                val i = Scanner(System.`in`)
-                val reply = i.nextInt()
-                selected = clients[reply]
             }
             "register" -> {
                 if (selected == null) continue@loop
