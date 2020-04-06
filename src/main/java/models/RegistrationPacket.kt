@@ -10,7 +10,7 @@ import java.io.Serializable
 
 class RegistrationPacket: Serializable, Packet {
 
-    override var payload: Serializable? = null;
+    override var payload: Serializable? = null
 
     companion object {
         private const val serialVersionUID = 578515438738407941L

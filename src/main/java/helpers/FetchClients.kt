@@ -19,24 +19,24 @@ import java.util.*
 fun fetchClients(dataFile: String = "/data/graph.txt"): List<Client> {
 
     var clients: MutableList<Client> = mutableListOf<Client>()
-    val projectDir: String = File("").absolutePath;
+    val projectDir: String = File("").absolutePath
 
-    val fileToRead: File = File(projectDir + dataFile);
-    val scanner: Scanner = Scanner(fileToRead);
+    val fileToRead: File = File(projectDir + dataFile)
+    val scanner: Scanner = Scanner(fileToRead)
 
     while (scanner.hasNextLine()) {
-        val data: String = scanner.nextLine();
+        val data: String = scanner.nextLine()
         // Example input -> it: "1 3 4 5 45 75"
-        val client: Client = Client();
+        val client: Client = Client()
         client.id = data[0].toInt()
-        val iterable: String = data.substring(1);
+        val iterable: String = data.substring(1)
         for (follower in iterable.trim().split(" ")) {
-            client.addFollower(follower.toInt());
+            client.addFollower(follower.toInt())
         }
-        clients.add(client);
+        clients.add(client)
     }
 
-    scanner.close();
+    scanner.close()
     return clients
 
 }
