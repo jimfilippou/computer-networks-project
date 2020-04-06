@@ -7,10 +7,13 @@ package helpers
 
 import models.Client
 import models.Server
+import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import kotlin.system.exitProcess
+
+operator fun Regex.contains(text: CharSequence): Boolean = this.matches(text)
 
 /**
  * CLI tool to manage clients (EXPERIMENTAL)
@@ -41,7 +44,7 @@ fun interpret(server: Server) {
             "selected" -> {
                 println(selected)
             }
-            "select" -> {
+            "use" -> {
                 for ((index, value) in clients.withIndex()) {
                     println("[$index] -> $value")
                 }
@@ -59,6 +62,28 @@ fun interpret(server: Server) {
                     println(path)
                 }
             }
+            "upload" -> {
+                if (selected == null) return
+                if (selected.id == -1) {
+                    Logger.warn("User is not logged in!")
+                    continue@loop
+                }
+                print("1) Post\n 2) Image\nWhat would you like to upload? :")
+                val i = Scanner(System.`in`)
+                when (i.nextInt()) {
+                    1 -> {
+                        print("This is not supported YET")
+                    }
+                    2 -> {
+                        print("Give absolute path of the image you want to upload and the name: ")
+                        val p = Scanner(System.`in`)
+                        val path = p.next()
+                        val name = p.next()
+                        copyFileUsingStream(File(path), File("storage/c${selected.id}/$name"))
+                    }
+                    else -> print("Unrecognized command")
+                }
+            }
             "help" -> {
                 if (selected == null) continue@loop
                 println("1. register\n2. login")
@@ -68,5 +93,23 @@ fun interpret(server: Server) {
             }
             else -> print("xd")
         }
+    }
+}
+
+@Throws(IOException::class)
+fun copyFileUsingStream(source: File, destination: File) {
+    var `is`: InputStream? = null
+    var os: OutputStream? = null
+    try {
+        `is` = FileInputStream(source)
+        os = FileOutputStream(destination)
+        val buffer = ByteArray(1024)
+        var length: Int
+        while (`is`.read(buffer).also { length = it } > 0) {
+            os.write(buffer, 0, length)
+        }
+    } finally {
+        `is`?.close()
+        os?.close()
     }
 }

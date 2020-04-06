@@ -22,8 +22,9 @@ object Main {
 
         when (args[0]) {
             "server" -> {
-                val serverInfo = Server(ip, port)
-                val server = ServerConnectionHandler(serverInfo)
+                val instance = Server(ip, port)
+                instance.setup()
+                val server = ServerConnectionHandler(instance)
                 server.start()
             }
             "clients" -> {
@@ -34,7 +35,9 @@ object Main {
                 }
             }
             "interpreter" -> {
-                interpret(Server(ip, port))
+                val default = Server(ip, port)
+                default.callee = "interpreter"
+                interpret(default)
             }
         }
 

@@ -13,19 +13,24 @@ class Server(var ip: String, var port: Int) {
 
     private var counter = 0
     private val registeredUserIDs: MutableList<Int> = mutableListOf<Int>()
+    var callee: String? = null
 
-    init {
+    fun setup() {
         val storage = File("storage")
+
         if (storage.exists() && storage.isDirectory) {
             Logger.debug("Found old server storage files, deleting...")
-            if (storage.delete()) {
-                Logger.success("Storage was successfully deleted.")
-                Logger.debug("Creating new storage files...")
-                File("storage").mkdir()
-                File("storage/server").mkdir()
-            } else {
-                Logger.error("Storage was not deleted.")
+
+            val children: Array<String> = storage.list()
+            for (i in children.indices) {
+                File(storage, children[i]).delete()
             }
+
+            Logger.success("Storage was successfully deleted.")
+            Logger.debug("Creating new storage files...")
+            File("storage").mkdir()
+            File("storage/server").mkdir()
+
         } else {
             Logger.debug("Creating new storage files...")
             File("storage").mkdir()
