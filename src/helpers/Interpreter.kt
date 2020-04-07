@@ -63,7 +63,7 @@ fun interpret(server: Server) {
                 }
             }
             "upload" -> {
-                if (selected == null) return
+                if (selected == null) continue@loop
                 if (selected.id == -1) {
                     Logger.warn("User is not logged in!")
                     continue@loop

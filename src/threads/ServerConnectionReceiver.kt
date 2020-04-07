@@ -3,17 +3,27 @@
  * Dimitrios Filippou・p3160253@aueb.gr
  */
 
-package handlers
+package threads
 
 import helpers.Logger
 import models.Server
+import java.io.File
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class ServerConnectionHandler(private val server: Server) : Thread() {
+/**
+ * The master thread of the application.
+ *
+ * This class handles connections and spawns proper threads for serving clients.
+ *
+ * @since 0.0.1
+ * @param server the server instance to operate on
+ * @constructor Creates a new master thread which can be executed by the start() function.
+ */
+class ServerConnectionReceiver(private val server: Server) : Thread() {
 
     override fun run() {
         val providerSocket: ServerSocket
@@ -30,7 +40,7 @@ class ServerConnectionHandler(private val server: Server) : Thread() {
                 val input = ObjectInputStream(connection.getInputStream())
                 val incoming = input.readObject()
                 synchronized(this) {
-                    server.receivePacket(incoming, out)
+                    this.receivePacket(incoming, out)
                 }
                 input.close()
                 connection.close()
@@ -39,6 +49,19 @@ class ServerConnectionHandler(private val server: Server) : Thread() {
         } catch (err: Exception) {
             err.printStackTrace()
         }
+    }
+
+    /**
+     * Spawn a thread for each request
+     */
+    private fun receivePacket(packet: Any, replyTo: ObjectOutputStream) {
+        // TODO: Implement packet queue so that nothing gets lost
+        if (server.slaves == 7) {
+            Logger.info("Server threads have reached the limit, waiting 2 seconds...")
+            Thread.sleep(2000)
+            return //! LOSS OF PACKET
+        }
+        ServerThreadDistribution(this.server, packet, replyTo).start()
     }
 
 }

@@ -3,7 +3,7 @@
  * Dimitrios Filippou・p3160253@aueb.gr
  */
 
-package handlers
+package threads
 
 import models.Client
 import models.Server

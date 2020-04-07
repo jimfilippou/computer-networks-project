@@ -3,8 +3,8 @@
  * Dimitrios Filippou・p3160253@aueb.gr
  */
 
-import handlers.ClientHandler
-import handlers.ServerConnectionHandler
+import threads.ClientHandler
+import threads.ServerConnectionReceiver
 import helpers.fetchClients
 import helpers.getIPv4Address
 import helpers.interpret
@@ -24,7 +24,7 @@ object Main {
             "server" -> {
                 val instance = Server(ip, port)
                 instance.setup()
-                val server = ServerConnectionHandler(instance)
+                val server = ServerConnectionReceiver(instance)
                 server.start()
             }
             "clients" -> {
@@ -36,7 +36,6 @@ object Main {
             }
             "interpreter" -> {
                 val default = Server(ip, port)
-                default.callee = "interpreter"
                 interpret(default)
             }
         }
