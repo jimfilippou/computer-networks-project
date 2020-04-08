@@ -10,14 +10,21 @@ import factories.PacketFactory
 import helpers.sendToServer
 import java.io.Serializable
 
+/**
+ * The client data model, which also holds methods for client connectivity features from & to the server
+ *
+ * @param id optionally pass an ID if you want, defaults to -1
+ * @since 0.0.3
+ */
 class Client(var id: Int = -1) : Serializable {
 
     private var loggedIn: Boolean = false
-    private val followerIDs: MutableList<Int> = mutableListOf<Int>()
+    private val following: MutableList<Int> = mutableListOf<Int>()
+    private val followedBy: MutableList<Int> = mutableListOf<Int>()
     private val factory: PacketFactory = PacketFactory()
 
-    fun addFollower(followerID: Int) {
-        this.followerIDs.add(followerID)
+    fun follow(followerID: Int) {
+        this.following.add(followerID)
     }
 
     fun register(destination: Server) {
@@ -29,8 +36,14 @@ class Client(var id: Int = -1) : Serializable {
 
     fun dispatchUploadEvent(image: String, destination: Server) {
         val packet: UploadImagePacket = this.factory.makePacket(PacketType.UPLOAD_IMAGE) as UploadImagePacket
-        packet.payload = UploadImagePacket.ImagePayload(this, image)
+        packet.payload = UploadImagePacket.UploadImagePayload(this, image)
         sendToServer(packet, this, destination)
+    }
+
+    fun dispatchListUsersEvent(destination: Server, callback: (usersIDs: Any?) -> Unit) {
+        val packet: ListUsersPacket = this.factory.makePacket(PacketType.LIST_USER_IDS) as ListUsersPacket
+        packet.payload = ListUsersPacket.ListUsersPayload(this)
+        sendToServer(packet, this, destination, callback)
     }
 
     companion object {

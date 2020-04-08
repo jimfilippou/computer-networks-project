@@ -8,11 +8,14 @@ package models
 import helpers.Logger
 import java.io.File
 import java.io.ObjectOutputStream
+import java.io.Serializable
 
 /**
  * Server configuration & data object
+ *
+ * @since 0.0.1
  */
-class Server(var ip: String, var port: Int) {
+class Server(var ip: String, var port: Int): Serializable {
 
     var slaves: Int = 0
     val maxSlaves: Int = 7

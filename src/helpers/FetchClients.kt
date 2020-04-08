@@ -32,7 +32,7 @@ fun fetchClients(dataFile: String = "/data/graph.txt"): List<Client> {
         client.id = data[0].toInt()
         val iterable: String = data.substring(1)
         for (follower in iterable.trim().split(" ")) {
-            client.addFollower(follower.toInt())
+            client.follow(follower.toInt())
         }
         clients.add(client)
     }

@@ -62,6 +62,12 @@ fun interpret(server: Server) {
                     println(path)
                 }
             }
+            "remote list" -> {
+                if (selected == null) continue@loop
+                selected.dispatchListUsersEvent(server) {
+                        results -> println(results)
+                }
+            }
             "upload" -> {
                 if (selected == null) continue@loop
                 if (selected.id == -1) {

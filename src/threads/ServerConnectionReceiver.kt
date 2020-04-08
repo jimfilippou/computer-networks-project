@@ -20,7 +20,7 @@ import java.net.Socket
  *
  * @param server the server instance to operate on
  * @constructor Creates a new master thread which can be executed by the start() function.
- * @since 0.0.1
+ * @since 0.0.3
  */
 class ServerConnectionReceiver(private val server: Server) : Thread() {
 
@@ -39,10 +39,12 @@ class ServerConnectionReceiver(private val server: Server) : Thread() {
                 val input = ObjectInputStream(connection.getInputStream())
                 val incoming = input.readObject()
                 synchronized(this) {
-                    this.receivePacket(incoming, out)
+                    this.receivePacket(incoming, out) {
+                        // Inside callback, which means that the thread is done :)
+                        input.close()
+                        connection.close()
+                    }
                 }
-                input.close()
-                connection.close()
             }
 
         } catch (err: Exception) {
@@ -55,16 +57,14 @@ class ServerConnectionReceiver(private val server: Server) : Thread() {
      *
      * @param packet the packet received from the outside world
      * @param replyTo the stream which the thread will reply to
-     * @since 0.0.2
+     * @since 0.0.3
      */
-    private fun receivePacket(packet: Any, replyTo: ObjectOutputStream) {
-        // TODO: Implement packet queue so that nothing gets lost
+    private fun receivePacket(packet: Any, replyTo: ObjectOutputStream, callback: () -> Unit) {
         if (server.slaves == 7) {
-            Logger.info("Server threads have reached the limit, waiting 2 seconds...")
-            Thread.sleep(2000)
-            return //! LOSS OF PACKET
+            Logger.warn("Server threads have reached the limit!")
+            return
         }
-        ServerThreadDistribution(this.server, packet, replyTo).start()
+        ServerThreadDistribution(this.server, packet, replyTo, callback).start()
     }
 
 }

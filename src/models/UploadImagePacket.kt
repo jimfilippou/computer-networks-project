@@ -8,11 +8,15 @@ package models
 import interfaces.Packet
 import java.io.Serializable
 
+/**
+ *
+ * @since 0.0.3
+ */
 class UploadImagePacket : Serializable, Packet {
 
-    data class ImagePayload(val client: Client, val image: String) : Serializable
+    data class UploadImagePayload(val sender: Client, val image: String) : Serializable
 
-    override var payload: ImagePayload? = null
+    override var payload: Any? = null
 
     companion object {
         private const val serialVersionUID = 578515438738407941L

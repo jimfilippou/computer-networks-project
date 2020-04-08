@@ -12,6 +12,6 @@ package interfaces
  */
 interface Packet {
 
-    val payload: Any?
+    var payload: Any?
 
 }

@@ -12,6 +12,7 @@ package enums
 enum class PacketType {
 
     REGISTRATION,
-    UPLOAD_IMAGE
+    UPLOAD_IMAGE,
+    LIST_USER_IDS
 
 }
