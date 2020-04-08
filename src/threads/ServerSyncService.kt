@@ -5,10 +5,17 @@
 
 package threads
 
-class ServerSyncService: Thread() {
+// 100% useless
+// TODO: Delete this if not needed
+class ServerSyncService : Thread() {
 
     override fun run() {
-        super.run()
+
+        while (true) {
+            Thread.sleep(1000)
+
+        }
+
     }
 
 }

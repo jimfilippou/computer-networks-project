@@ -14,6 +14,7 @@ import java.util.*
  *
  * @param dataFile the file which contains the graph.
  * @throws NullPointerException
+ * @since 0.0.1
  * @return A list of clients.
  */
 fun fetchClients(dataFile: String = "/data/graph.txt"): List<Client> {

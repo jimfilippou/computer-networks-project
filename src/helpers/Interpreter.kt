@@ -80,6 +80,7 @@ fun interpret(server: Server) {
                         val path = p.next()
                         val name = p.next()
                         copyFileUsingStream(File(path), File("storage/c${selected.id}/$name"))
+                        selected.dispatchUploadEvent(name, server)
                     }
                     else -> print("Unrecognized command")
                 }

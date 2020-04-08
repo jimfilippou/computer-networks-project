@@ -7,7 +7,6 @@ package threads
 
 import helpers.Logger
 import models.Server
-import java.io.File
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.InetAddress
@@ -19,9 +18,9 @@ import java.net.Socket
  *
  * This class handles connections and spawns proper threads for serving clients.
  *
- * @since 0.0.1
  * @param server the server instance to operate on
  * @constructor Creates a new master thread which can be executed by the start() function.
+ * @since 0.0.1
  */
 class ServerConnectionReceiver(private val server: Server) : Thread() {
 
@@ -53,6 +52,10 @@ class ServerConnectionReceiver(private val server: Server) : Thread() {
 
     /**
      * Spawn a thread for each request
+     *
+     * @param packet the packet received from the outside world
+     * @param replyTo the stream which the thread will reply to
+     * @since 0.0.2
      */
     private fun receivePacket(packet: Any, replyTo: ObjectOutputStream) {
         // TODO: Implement packet queue so that nothing gets lost

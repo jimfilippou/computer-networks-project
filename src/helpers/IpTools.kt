@@ -13,6 +13,7 @@ import java.net.SocketException
  * Reads all network interfaces, picks the IPv4 address
  *
  * @throws RuntimeException
+ * @since 0.0.1
  * @return The LAN IPv4 address
  */
 @Throws(java.lang.RuntimeException::class)

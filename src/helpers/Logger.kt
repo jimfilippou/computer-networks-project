@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat
 /**
  * A custom logger because it is easier to debug.
  * Every function is static and it supports various terminal colors
+ *
+ * @since 0.0.1
  */
 object Logger {
 

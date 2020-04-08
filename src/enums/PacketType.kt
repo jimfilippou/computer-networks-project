@@ -5,8 +5,13 @@
 
 package enums
 
+/**
+ * The packet enumeration.
+ * @since 0.0.2
+ */
 enum class PacketType {
 
-    REGISTRATION
+    REGISTRATION,
+    UPLOAD_IMAGE
 
 }

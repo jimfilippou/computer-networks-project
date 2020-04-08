@@ -5,8 +5,10 @@
 
 package interfaces
 
-/*
- * The packet interface, which is part of the factory design pattern
+/**
+ * The packet interface
+ *
+ * @since 0.0.1
  */
 interface Packet {
 
