@@ -5,24 +5,23 @@
 
 package models
 
+import aliases.rp
 import interfaces.Packet
 import java.io.Serializable
 
 /**
  * The registration packet
  *
- * @since 0.0.3
+ * @since 0.0.4
  */
 class RegistrationPacket: Serializable, Packet {
+
+    data class RegistrationPayload(val sender: Any, val id: Int = -1) : Serializable
 
     override var payload: Any? = null
 
     override fun toString(): String {
-        return "Registration packet: \"${this.hashCode() % 1000}\""
-    }
-
-    companion object {
-        private const val serialVersionUID = 578515438738407941L
+        return "RegistrationPacket(sender=${(payload as rp).sender}, id=${(payload as rp).id})"
     }
 
 }

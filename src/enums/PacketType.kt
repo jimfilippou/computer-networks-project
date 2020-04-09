@@ -13,6 +13,7 @@ enum class PacketType {
 
     REGISTRATION,
     UPLOAD_IMAGE,
-    LIST_USER_IDS
+    LIST_USER_IDS,
+    FOLLOW_USER
 
 }

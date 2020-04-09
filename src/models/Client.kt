@@ -18,20 +18,21 @@ import java.io.Serializable
  */
 class Client(var id: Int = -1) : Serializable {
 
-    private var loggedIn: Boolean = false
     private val following: MutableList<Int> = mutableListOf<Int>()
     private val followedBy: MutableList<Int> = mutableListOf<Int>()
     private val factory: PacketFactory = PacketFactory()
 
-    fun follow(followerID: Int) {
-        this.following.add(followerID)
+    fun follow(followerID: Int, destination: Server, callback: (success: Any?) -> Unit) {
+        //this.following.add(followerID)
+        val packet: FollowUserPacket = this.factory.makePacket(PacketType.FOLLOW_USER) as FollowUserPacket
+        packet.payload = FollowUserPacket.FollowUserPayload(this, followerID)
+        sendToServer(packet, this, destination, callback)
     }
 
     fun register(destination: Server) {
         val packet: RegistrationPacket = this.factory.makePacket(PacketType.REGISTRATION) as RegistrationPacket
-        packet.payload = this.id
+        packet.payload = RegistrationPacket.RegistrationPayload(this)
         sendToServer(packet, this, destination)
-        this.loggedIn = true
     }
 
     fun dispatchUploadEvent(image: String, destination: Server) {

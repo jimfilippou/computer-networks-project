@@ -53,6 +53,17 @@ fun interpret(server: Server) {
                     continue@loop
                 }
             }
+            in Regex("^follow\\s\\d+") -> {
+                val index = command.split(" ")[1].toInt()
+                if (selected == null) continue@loop
+                selected.follow(index, server) { status ->
+                    if (status == true) {
+                        print("Everything OK")
+                    } else {
+                        print("not ok")
+                    }
+                }
+            }
             "register" -> {
                 if (selected == null) continue@loop
                 selected.register(server)
@@ -64,8 +75,8 @@ fun interpret(server: Server) {
             }
             "remote list" -> {
                 if (selected == null) continue@loop
-                selected.dispatchListUsersEvent(server) {
-                        results -> println(results)
+                selected.dispatchListUsersEvent(server) { results ->
+                    println(results)
                 }
             }
             "upload" -> {

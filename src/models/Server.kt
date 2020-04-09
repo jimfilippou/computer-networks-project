@@ -7,7 +7,6 @@ package models
 
 import helpers.Logger
 import java.io.File
-import java.io.ObjectOutputStream
 import java.io.Serializable
 
 /**
@@ -20,7 +19,7 @@ class Server(var ip: String, var port: Int): Serializable {
     var slaves: Int = 0
     val maxSlaves: Int = 7
     var counter: Int = 0
-    val registeredUserIDs: MutableList<Int> = mutableListOf<Int>()
+    val registeredUsers: HashMap<Int, Client> = hashMapOf<Int, Client>()
 
     fun setup() {
         val storage = File("storage")

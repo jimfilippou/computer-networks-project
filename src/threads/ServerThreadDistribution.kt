@@ -5,13 +5,13 @@
 
 package threads
 
+import aliases.fup
+import aliases.rp
+import aliases.uip
 import enums.PacketType
 import factories.PacketFactory
 import helpers.Logger
-import models.ListUsersPacket
-import models.RegistrationPacket
-import models.Server
-import models.UploadImagePacket
+import models.*
 import java.io.File
 import java.io.ObjectOutputStream
 
@@ -21,7 +21,7 @@ import java.io.ObjectOutputStream
  * @param server the server object to update information based on type of packet & permissions
  * @param packet the incoming packet of type Packet
  * @param replyTo the output stream to write results to
- * @since 0.0.3
+ * @since 0.0.4
  */
 class ServerThreadDistribution(
     private val server: Server,
@@ -38,14 +38,20 @@ class ServerThreadDistribution(
         }
         when (packet) {
             is RegistrationPacket -> {
-                Logger.debug("Received registration packet from -> ${packet.payload}")
+                Logger.debug("Received registration packet from -> ${(packet.payload as rp).sender}")
                 synchronized(this.server.counter) {
+                    // Update server counter
                     this.server.counter++
-                    this.server.registeredUserIDs.add(this.server.counter)
+                    // Update incoming packet
+                    ((packet.payload as rp).sender as Client).id = this.server.counter
+                    // Update server hashmap
+                    this.server.registeredUsers[this.server.counter] = (packet.payload as rp).sender as Client
                     Logger.debug("Creating directory \"c${this.server.counter}\" for user")
                     this.createUserDirectory(this.server.counter)
-                    Logger.debug("Writing ${this.server.counter} to socket: $replyTo")
-                    replyTo.writeObject(this.server.counter)
+                    val toSend = factory.makePacket(PacketType.REGISTRATION)
+                    toSend.payload = RegistrationPacket.RegistrationPayload(server, this.server.counter)
+                    Logger.debug("Writing $toSend to socket: $replyTo")
+                    replyTo.writeObject(toSend)
                 }
                 // TODO: Investigate the closure of the stream
                 // too afraid to uncomment the following lines
@@ -53,17 +59,34 @@ class ServerThreadDistribution(
                 // replyTo.close()
             }
             is UploadImagePacket -> {
-                packet.payload = packet.payload as UploadImagePacket.UploadImagePayload
                 Logger.debug(
-                    "Received image upload event from -> ${(packet.payload as UploadImagePacket.UploadImagePayload).sender}\n " +
-                            "Uploaded: ${(packet.payload as UploadImagePacket.UploadImagePayload).image}"
+                    "Received image upload event from -> ${(packet.payload as uip).sender}\n " +
+                            "Uploaded: ${(packet.payload as uip).image}"
                 )
                 //  ¯\_(ツ)_/¯
             }
             is ListUsersPacket -> {
                 Logger.debug("Received user list event from -> ${(packet.payload as ListUsersPacket.ListUsersPayload).sender}")
                 val packet = factory.makePacket(PacketType.LIST_USER_IDS)
-                packet.payload = ListUsersPacket.ListUsersPayload(server, server.registeredUserIDs)
+                var arr: MutableList<Int> = mutableListOf<Int>()
+                for ((_, value) in server.registeredUsers) {
+                    arr.add(value.id)
+                }
+                packet.payload = ListUsersPacket.ListUsersPayload(server, arr)
+                replyTo.writeObject(packet)
+            }
+            is FollowUserPacket -> {
+                print("Follow requested, ${(packet.payload as fup).sender} wants to follow user with ID: ${(packet.payload as fup).uid}")
+                val packet = factory.makePacket(PacketType.FOLLOW_USER)
+                packet.payload = FollowUserPacket.FollowUserPayload(server, success = true)
+                val isSelf: Boolean = ((packet.payload as fup).sender as Client).id == (packet.payload as fup).uid
+                if (isSelf) {
+                    Logger.warn("You can't follow yourself :P")
+                    (packet.payload as fup).success = false
+                } else {
+                    // TODO: Implement logic ASAP before release
+                    (packet.payload as fup).sender
+                }
                 replyTo.writeObject(packet)
             }
         }

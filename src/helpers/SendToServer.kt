@@ -5,10 +5,11 @@
 
 package helpers
 
+import aliases.fup
+import aliases.lup
+import aliases.rp
 import interfaces.Packet
-import models.Client
-import models.ListUsersPacket
-import models.Server
+import models.*
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.ConnectException
@@ -42,13 +43,22 @@ fun sendToServer(
         outgoing.flush()
         Thread.sleep(1000)
         when (val response = incoming.readObject()) {
-            // TODO: The following line is bad practice, but works, I should tell the server to send a proper object
-            is Int -> {
-                sender.id = response
-                Logger.debug("Client ID is set to $response from $receiver")
+
+            is RegistrationPacket -> {
+                sender.id = (response.payload as rp).id
+                Logger.debug(
+                    "Client ID is set to ${(response.payload as rp).id} from ${(response.payload as rp).sender}"
+                )
+                callback?.invoke(null)
+            }
+            is FollowUserPacket -> {
+                if ((response.payload as fup).success == true) {
+                    callback?.invoke(true)
+                }
+                callback?.invoke(false)
             }
             is ListUsersPacket -> {
-                callback?.invoke((response.payload as ListUsersPacket.ListUsersPayload).userIDs)
+                callback?.invoke((response.payload as lup).userIDs)
             }
             else -> return
         }
