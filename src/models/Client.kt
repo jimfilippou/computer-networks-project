@@ -14,22 +14,22 @@ import java.io.Serializable
  * The client data model, which also holds methods for client connectivity features from & to the server
  *
  * @param id optionally pass an ID if you want, defaults to -1
- * @since 0.0.3
+ * @since 0.0.4
  */
 class Client(var id: Int = -1) : Serializable {
 
-    private val following: MutableList<Int> = mutableListOf<Int>()
-    private val followedBy: MutableList<Int> = mutableListOf<Int>()
+    val following: MutableList<Int> = mutableListOf<Int>()
+    val followedBy: MutableList<Int> = mutableListOf<Int>()
     private val factory: PacketFactory = PacketFactory()
 
-    fun follow(followerID: Int, destination: Server, callback: (success: Any?) -> Unit) {
+    fun dispatchFollowEvent(followerID: Int, destination: Server, callback: (success: Any?) -> Unit) {
         //this.following.add(followerID)
         val packet: FollowUserPacket = this.factory.makePacket(PacketType.FOLLOW_USER) as FollowUserPacket
         packet.payload = FollowUserPacket.FollowUserPayload(this, followerID)
         sendToServer(packet, this, destination, callback)
     }
 
-    fun register(destination: Server) {
+    fun dispatchRegisterEvent(destination: Server) {
         val packet: RegistrationPacket = this.factory.makePacket(PacketType.REGISTRATION) as RegistrationPacket
         packet.payload = RegistrationPacket.RegistrationPayload(this)
         sendToServer(packet, this, destination)

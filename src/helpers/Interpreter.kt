@@ -56,7 +56,7 @@ fun interpret(server: Server) {
             in Regex("^follow\\s\\d+") -> {
                 val index = command.split(" ")[1].toInt()
                 if (selected == null) continue@loop
-                selected.follow(index, server) { status ->
+                selected.dispatchFollowEvent(index, server) { status ->
                     if (status == true) {
                         print("Everything OK")
                     } else {
@@ -66,7 +66,7 @@ fun interpret(server: Server) {
             }
             "register" -> {
                 if (selected == null) continue@loop
-                selected.register(server)
+                selected.dispatchRegisterEvent(server)
             }
             "ls" -> {
                 for (path in Files.list(Paths.get(System.getProperty("user.dir")))) {

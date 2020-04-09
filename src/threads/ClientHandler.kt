@@ -12,7 +12,7 @@ import models.Server
 class ClientHandler(private val client: Client, private val server: Server) : Thread() {
 
     override fun run() {
-        client.register(server)
+        client.dispatchRegisterEvent(server)
     }
 
 }

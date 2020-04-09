@@ -67,27 +67,30 @@ class ServerThreadDistribution(
             }
             is ListUsersPacket -> {
                 Logger.debug("Received user list event from -> ${(packet.payload as ListUsersPacket.ListUsersPayload).sender}")
-                val packet = factory.makePacket(PacketType.LIST_USER_IDS)
+                val toSend = factory.makePacket(PacketType.LIST_USER_IDS)
                 var arr: MutableList<Int> = mutableListOf<Int>()
                 for ((_, value) in server.registeredUsers) {
                     arr.add(value.id)
                 }
-                packet.payload = ListUsersPacket.ListUsersPayload(server, arr)
-                replyTo.writeObject(packet)
+                toSend.payload = ListUsersPacket.ListUsersPayload(server, arr)
+                replyTo.writeObject(toSend)
             }
             is FollowUserPacket -> {
-                print("Follow requested, ${(packet.payload as fup).sender} wants to follow user with ID: ${(packet.payload as fup).uid}")
-                val packet = factory.makePacket(PacketType.FOLLOW_USER)
-                packet.payload = FollowUserPacket.FollowUserPayload(server, success = true)
-                val isSelf: Boolean = ((packet.payload as fup).sender as Client).id == (packet.payload as fup).uid
-                if (isSelf) {
+                Logger.debug("Follow requested, ${(packet.payload as fup).sender} wants to follow user with ID: ${(packet.payload as fup).uid}")
+                val toSend = factory.makePacket(PacketType.FOLLOW_USER)
+                toSend.payload = FollowUserPacket.FollowUserPayload(server, success = true)
+                if (((packet.payload as fup).sender as Client).id == (packet.payload as fup).uid) {
                     Logger.warn("You can't follow yourself :P")
-                    (packet.payload as fup).success = false
+                    (toSend.payload as fup).success = false
                 } else {
-                    // TODO: Implement logic ASAP before release
-                    (packet.payload as fup).sender
+                    val sender: Client? = this.server.registeredUsers[((packet.payload as fup).sender as Client).id]
+                    val toBeFollowed: Int? = (packet.payload as fup).uid
+                    if (toBeFollowed != null) {
+                        sender?.following?.add(toBeFollowed)
+                        Logger.debug("$sender is not following user with ID: $toBeFollowed")
+                    }
                 }
-                replyTo.writeObject(packet)
+                replyTo.writeObject(toSend)
             }
         }
         synchronized(this.server.slaves) {

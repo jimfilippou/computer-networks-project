@@ -17,13 +17,12 @@ import java.net.InetAddress
 import java.net.Socket
 
 /**
- * Universal packet sender, used by clients
+ * Universal packet sender, used by each client
  *
  * @param payload the object to send
  * @param sender who sends the payload object
  * @param receiver who receives the payload object
- * @since 0.0.3
- * @return **[Unit]**
+ * @since 0.0.4
  */
 fun sendToServer(
     payload: Packet,
@@ -41,7 +40,7 @@ fun sendToServer(
         Logger.debug("Sending $payload to $receiver.")
         outgoing.writeUnshared(payload)
         outgoing.flush()
-        Thread.sleep(1000)
+        Thread.sleep(300)
         when (val response = incoming.readObject()) {
 
             is RegistrationPacket -> {
@@ -52,6 +51,7 @@ fun sendToServer(
                 callback?.invoke(null)
             }
             is FollowUserPacket -> {
+                // TODO: Both callbacks are invoked -> Logic error
                 if ((response.payload as fup).success == true) {
                     callback?.invoke(true)
                 }
