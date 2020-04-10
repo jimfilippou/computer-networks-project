@@ -73,6 +73,9 @@ fun interpret(server: Server) {
                     println(path)
                 }
             }
+            "list" -> {
+                println(clients)
+            }
             "remote list" -> {
                 if (selected == null) continue@loop
                 selected.dispatchListUsersEvent(server) { results ->
