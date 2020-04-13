@@ -44,8 +44,10 @@ class ServerThreadDistribution(
                     this.server.counter++
                     // Update incoming packet
                     ((packet.payload as rp).sender as Client).id = this.server.counter
-                    // Update server hashmap
-                    this.server.registeredUsers[this.server.counter] = (packet.payload as rp).sender as Client
+                    // Update server hashmap & graph file
+                    val sender = (packet.payload as rp).sender as Client
+                    this.server.registeredUsers[this.server.counter] = sender
+                    this.server.insertUserToGraphWithLock(sender)
                     Logger.debug("Creating directory \"c${this.server.counter}\" for user")
                     this.createUserDirectory(this.server.counter)
                     val toSend = factory.makePacket(PacketType.REGISTRATION)
@@ -87,7 +89,9 @@ class ServerThreadDistribution(
                     val toBeFollowed: Int? = (packet.payload as fup).uid
                     if (toBeFollowed != null) {
                         sender?.following?.add(toBeFollowed)
-                        Logger.debug("$sender is not following user with ID: $toBeFollowed")
+                        Logger.debug("$sender is now following user with ID: $toBeFollowed")
+                        this.server.registeredUsers[toBeFollowed]?.followedBy?.add((sender as Client).id)
+                        // TODO: Persist to file storage
                     }
                 }
                 replyTo.writeObject(toSend)
