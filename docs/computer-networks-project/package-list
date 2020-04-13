@@ -1,9 +1,0 @@
-$dokka.format:markdown
-$dokka.linkExtension:md
-
-enums
-factories
-helpers
-interfaces
-models
-threads
