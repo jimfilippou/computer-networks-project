@@ -21,7 +21,7 @@ import java.io.ObjectOutputStream
  * @param server the server object to update information based on type of packet & permissions
  * @param packet the incoming packet of type Packet
  * @param replyTo the output stream to write results to
- * @since 0.0.4
+ * @since 1.0.1
  */
 class ServerThreadDistribution(
     private val server: Server,
