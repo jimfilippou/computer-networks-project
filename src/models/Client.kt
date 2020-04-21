@@ -8,6 +8,10 @@ package models
 import enums.PacketType
 import factories.PacketFactory
 import helpers.sendToServer
+import models.packets.FollowUserPacket
+import models.packets.ListUsersPacket
+import models.packets.RegistrationPacket
+import models.packets.UploadImagePacket
 import java.io.Serializable
 
 /**
@@ -19,11 +23,10 @@ import java.io.Serializable
 class Client(var id: Int = -1) : Serializable {
 
     val following: MutableList<Int> = mutableListOf<Int>()
-    val followedBy: MutableList<Int> = mutableListOf<Int>()
+    val followers: MutableList<Int> = mutableListOf<Int>()
     private val factory: PacketFactory = PacketFactory()
 
     fun dispatchFollowEvent(followerID: Int, destination: Server, callback: (success: Any?) -> Unit) {
-        //this.following.add(followerID)
         val packet: FollowUserPacket = this.factory.makePacket(PacketType.FOLLOW_USER) as FollowUserPacket
         packet.payload = FollowUserPacket.FollowUserPayload(this, followerID)
         sendToServer(packet, this, destination, callback)

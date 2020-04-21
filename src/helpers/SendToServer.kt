@@ -10,6 +10,9 @@ import aliases.lup
 import aliases.rp
 import interfaces.Packet
 import models.*
+import models.packets.FollowUserPacket
+import models.packets.ListUsersPacket
+import models.packets.RegistrationPacket
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.ConnectException
@@ -42,7 +45,6 @@ fun sendToServer(
         outgoing.flush()
         Thread.sleep(300)
         when (val response = incoming.readObject()) {
-
             is RegistrationPacket -> {
                 sender.id = (response.payload as rp).id
                 Logger.debug(
@@ -51,9 +53,9 @@ fun sendToServer(
                 callback?.invoke(null)
             }
             is FollowUserPacket -> {
-                // TODO: Both callbacks are invoked -> Logic error
                 if ((response.payload as fup).success == true) {
                     callback?.invoke(true)
+                    return
                 }
                 callback?.invoke(false)
             }

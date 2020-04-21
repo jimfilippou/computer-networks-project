@@ -60,7 +60,7 @@ class ServerConnectionReceiver(private val server: Server) : Thread() {
      * @since 0.0.3
      */
     private fun receivePacket(packet: Any, replyTo: ObjectOutputStream, callback: () -> Unit) {
-        if (server.slaves == 7) {
+        if (server.slaves == server.maxSlaves) {
             Logger.warn("Server threads have reached the limit!")
             return
         }

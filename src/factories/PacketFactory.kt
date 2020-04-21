@@ -7,10 +7,10 @@ package factories
 
 import enums.PacketType
 import interfaces.Packet
-import models.FollowUserPacket
-import models.ListUsersPacket
-import models.RegistrationPacket
-import models.UploadImagePacket
+import models.packets.FollowUserPacket
+import models.packets.ListUsersPacket
+import models.packets.RegistrationPacket
+import models.packets.UploadImagePacket
 import java.io.Serializable
 
 /**

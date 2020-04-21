@@ -3,7 +3,7 @@
  * Dimitrios Filippou・p3160253@aueb.gr
  */
 
-package models
+package models.packets
 
 import interfaces.Packet
 import java.io.Serializable

@@ -12,6 +12,10 @@ import enums.PacketType
 import factories.PacketFactory
 import helpers.Logger
 import models.*
+import models.packets.FollowUserPacket
+import models.packets.ListUsersPacket
+import models.packets.RegistrationPacket
+import models.packets.UploadImagePacket
 import java.io.File
 import java.io.ObjectOutputStream
 
@@ -90,8 +94,8 @@ class ServerThreadDistribution(
                     if (toBeFollowed != null) {
                         sender?.following?.add(toBeFollowed)
                         Logger.debug("$sender is now following user with ID: $toBeFollowed")
-                        this.server.registeredUsers[toBeFollowed]?.followedBy?.add((sender as Client).id)
-                        // TODO: Persist to file storage
+                        this.server.registeredUsers[toBeFollowed]?.followers?.add((sender as Client).id)
+                        // todo: persist to file storage
                     }
                 }
                 replyTo.writeObject(toSend)

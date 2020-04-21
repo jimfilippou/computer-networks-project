@@ -5,10 +5,10 @@
 
 package aliases
 
-import models.FollowUserPacket
-import models.ListUsersPacket
-import models.RegistrationPacket
-import models.UploadImagePacket
+import models.packets.FollowUserPacket
+import models.packets.ListUsersPacket
+import models.packets.RegistrationPacket
+import models.packets.UploadImagePacket
 
 /**
  * Aliases are used to make code smaller, because names are getting bigger and bigger.

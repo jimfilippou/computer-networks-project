@@ -25,6 +25,7 @@ class Server(var ip: String, var port: Int) : Serializable {
     val maxSlaves: Int = 7
     var counter: Int = 0
     val registeredUsers: HashMap<Int, Client> = hashMapOf<Int, Client>()
+    val posts: HashMap<Int, Post> = hashMapOf<Int, Post>()
 
     /**
      * Sets up the server storage files
@@ -72,6 +73,7 @@ class Server(var ip: String, var port: Int) : Serializable {
 
     /**
      * @since 1.0.1
+     * todo: fix an error where file is being overwritten
      */
     fun insertUserToGraphWithLock(c: Client): Unit {
         try {
@@ -95,8 +97,7 @@ class Server(var ip: String, var port: Int) : Serializable {
     }
 
     override fun toString(): String {
-        return "Server"
+        return "The lonely server"
     }
-
 
 }
