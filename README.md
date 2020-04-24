@@ -1,3 +1,3 @@
-# Documentation **DEPRECATED**
+# Documentation 🚀
 
-https://computer-networks-project-docs.now.sh/
+https://friendly-khorana-57ae3c.netlify.app/computer-networks-project/

@@ -2,6 +2,9 @@ language: java
 
 sudo: true
 
+install:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V --quiet
+
 script:
   - mvn -ntp dokka:dokka
 
