@@ -4,16 +4,11 @@ sudo: true
 
 script:
   - mvn -ntp dokka:dokka
-  - cd docs/computer-networks-project
-  - wget https://gist.githubusercontent.com/jimfilippou/986a19ac625f84dbe1778afffb785ea2/raw/4fc658a64fa35648822b12f6cc0899f3878e00bc/core.css
-  - awk '/link/ { print; print "<link rel=\"stylesheet\" href=\"./core.css\" />"; next }1' index.html > a.html
-  - mv index.html tmp.html && mv a.html index.html && rm tmp.html
-  - cd .. && cd ..
 
 deploy:
   provider: netlify
   site: eff70c88-c785-4066-b100-893cb6d328a5
   auth: 49a856262cc0ed4719418f731a48bb3c03a963e48cb6567594e19ed751ce23c9
   edge: true
-  dir: docs/computer-networks-project
+  dir: docs
   prod: true
