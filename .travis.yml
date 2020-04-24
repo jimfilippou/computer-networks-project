@@ -6,7 +6,8 @@ script:
   - mvn dokka:dokka
   - cd docs/computer-networks-project
   - wget https://gist.githubusercontent.com/jimfilippou/986a19ac625f84dbe1778afffb785ea2/raw/4fc658a64fa35648822b12f6cc0899f3878e00bc/core.css
-  - sed 's/<link rel="stylesheet" href="../style.css">\n<link rel="stylesheet" href="./core.css">/' index.html
+  - awk '/link/ { print; print "<link rel=\"stylesheet\" href=\"./core.css\" />"; next }1' index.html > index.html
+  - cd ..
 
 deploy:
   provider: netlify
