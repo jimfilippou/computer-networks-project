@@ -18,8 +18,9 @@ import java.net.Socket
  * The master thread of the application.
  *
  * This class handles connections and spawns proper threads for serving clients.
+ * Each request is assigned to a slave thread, thus not executed by the master thread.
  *
- * @param server the server instance to operate on
+ * @property server the server instance to operate on
  * @constructor Creates a new master thread which can be executed by the start() function.
  * @since 0.0.3
  */

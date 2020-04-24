@@ -16,9 +16,12 @@ import models.packets.UploadImagePacket
 import java.io.Serializable
 
 /**
- * The client data model, which also holds methods for client connectivity features from & to the server
+ * The client data model
  *
- * @param id optionally pass an ID if you want, defaults to -1
+ * The *Client* class holds methods for client connectivity features from & to the server.
+ *
+ * @property id optionally pass an ID if you want, defaults to -1
+ * @constructor Creates a new *Client* instance
  * @since 0.0.4
  */
 class Client(var id: Int = -1) : Serializable {

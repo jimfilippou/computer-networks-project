@@ -21,11 +21,15 @@ import java.io.File
 import java.io.ObjectOutputStream
 
 /**
- * Slave thread, for each request
+ * A slave thread, to handle each assigned request
  *
- * @param server the server object to update information based on type of packet & permissions
- * @param packet the incoming packet of type Packet
- * @param replyTo the output stream to write results to
+ * This class, extends Java's *Thread* class and overrides the *run* function for custom functionality.
+ * It works in a synchronized way to avoid issues caused by multithreading.
+ *
+ * @property server the server object to update information based on type of packet & permissions
+ * @property packet the incoming packet of type Packet
+ * @property replyTo the output stream to write results to
+ * @constructor Creates a new slave thread which will handle the request that the master thread assigned to it
  * @since 1.0.1
  */
 class ServerThreadDistribution(

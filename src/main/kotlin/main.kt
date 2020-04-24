@@ -4,7 +4,6 @@
  * File: main.kt
  */
 
-import threads.ClientHandler
 import threads.ServerConnectionReceiver
 import helpers.fetchClients
 import helpers.getIPv4Address
@@ -27,13 +26,6 @@ object Main {
                 instance.setup()
                 val server = ServerConnectionReceiver(instance)
                 server.start()
-            }
-            "clients" -> {
-                val clients: List<Client> = fetchClients()
-                for (client in clients) {
-                    val service = ClientHandler(client, server = Server(ip, port))
-                    service.start()
-                }
             }
             "interpreter" -> {
                 val default = Server(ip, port)
