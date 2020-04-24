@@ -1,0 +1,14 @@
+language: java
+
+sudo: true
+
+script:
+  - mvn dokka:dokka
+
+deploy:
+  provider: netlify
+  site: eff70c88-c785-4066-b100-893cb6d328a5
+  auth: 49a856262cc0ed4719418f731a48bb3c03a963e48cb6567594e19ed751ce23c9
+  edge: true
+  dir: docs/computer-networks-project
+  prod: true
