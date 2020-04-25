@@ -18,6 +18,7 @@ import java.io.Serializable
  * The packet factory.
  *
  * Creates packet objects that handle appropriate data.
+ *
  * @since 0.0.4
  */
 class PacketFactory : Serializable {
