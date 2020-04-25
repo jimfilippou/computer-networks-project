@@ -73,6 +73,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.6</version>
+
                 <configuration>
                     <finalName>computer-networks-project</finalName>
                     <archive>
@@ -80,9 +81,7 @@
                             <mainClass>${main.class}</mainClass>
                         </manifest>
                     </archive>
-                    <descriptorRefs>
-                        <descriptorRef>complete-${version}</descriptorRef>
-                    </descriptorRefs>
+                    <descriptor>src/assembly/dep.xml</descriptor>
                 </configuration>
                 <executions>
                     <execution>
