@@ -11,12 +11,15 @@ import java.io.File
 import java.util.*
 
 /**
+ * DEPRECATED
+ *
  * Reads data graph and returns clients along with their followers
  *
  * @param dataFile the file which contains the graph.
  * @throws NullPointerException
  * @since 0.0.1
  * @return A list of clients.
+ * @suppress
  */
 fun fetchClients(dataFile: String = "/data/graph.txt"): List<Client> {
 
