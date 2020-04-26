@@ -20,12 +20,10 @@ fun main(args: Array<String>) {
         "server" -> {
             val instance = Server(ip, port)
             instance.setup()
-            val server = ServerConnectionReceiver(instance)
-            server.start()
+            ServerConnectionReceiver(instance).start()
         }
         "interpreter" -> {
-            val default = Server(ip, port)
-            interpret(default)
+            interpret(Server(ip, port))
         }
     }
 

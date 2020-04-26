@@ -63,12 +63,12 @@ fun sendToServer(
             is ListUsersPacket -> {
                 callback?.invoke((response.payload as lup).userIDs)
             }
-            else -> return
+            else -> print(response)
         }
     } catch (err: Exception) {
         when (err) {
             is ConnectException -> Logger.error("$sender tried to connect to $receiver but connection was refused.")
-            else -> Logger.error("Something bad happened :/")
+            else -> err.message?.let { Logger.error(it) }
         }
     }
 

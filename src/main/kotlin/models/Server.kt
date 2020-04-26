@@ -7,10 +7,7 @@
 package models
 
 import helpers.Logger
-import java.io.File
-import java.io.IOException
-import java.io.RandomAccessFile
-import java.io.Serializable
+import java.io.*
 import java.nio.channels.OverlappingFileLockException
 
 
@@ -21,7 +18,7 @@ import java.nio.channels.OverlappingFileLockException
  */
 class Server(var ip: String, var port: Int) : Serializable {
 
-    private var graph: File? = null
+    private var graph: File = File("")
     var slaves: Int = 0
     val maxSlaves: Int = 7
     var counter: Int = 0
@@ -56,15 +53,16 @@ class Server(var ip: String, var port: Int) : Serializable {
     }
 
     /**
-     * @since 1.0.1
+     * @since 1.2.0
      */
     private fun makeGraph(): Unit {
         try {
             this.graph = File("storage/server/graph.txt")
-            if (this.graph!!.createNewFile()) {
-                Logger.info("File created: " + this.graph!!.name)
+            if (this.graph.createNewFile()) {
+                Logger.info("File created: " + this.graph.name)
             } else {
-                Logger.info("File already exists.")
+                Logger.info("File already exists, resetting")
+                FileOutputStream(this.graph).close()
             }
         } catch (e: IOException) {
             Logger.error("An error occurred!")
@@ -73,28 +71,37 @@ class Server(var ip: String, var port: Int) : Serializable {
     }
 
     /**
-     * @since 1.0.1
-     * todo: fix an error where file is being overwritten
+     * @since 1.2.0
      */
     fun insertUserToGraphWithLock(c: Client): Unit {
         try {
+            val raf = RandomAccessFile(this.graph, "rw")
+            val chan = raf.channel
 
-            val chan = RandomAccessFile(this.graph, "rw")
-            var lock = chan.channel.lock()
+            // Use the file channel to create a lock on the file.
+            // This method blocks until it can retrieve the lock.
+            var lock = chan.lock()
 
+            // Try acquiring the lock without blocking. This method returns
+            // null or throws an exception if the file is already locked.
             try {
-                lock = chan.channel.tryLock()
+                lock = chan.tryLock()
             } catch (e: OverlappingFileLockException) {
                 // File is already locked in this thread or virtual machine
             }
 
-            chan.writeBytes("${c.id}\n")
+            val fileLength = this.graph.length()
+            raf.seek(fileLength)
+            raf.write((c.id.toString() + "\n").toByteArray(Charsets.UTF_8))
 
+            // Release the lock - if it is not null!
             lock?.release()
-            chan.close()
-        } catch (err: Error) {
 
+            // Close the file
+            raf.close()
+        } catch (e: Exception) {
         }
+
     }
 
     override fun toString(): String {
