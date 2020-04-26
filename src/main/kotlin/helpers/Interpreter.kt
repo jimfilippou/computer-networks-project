@@ -12,6 +12,7 @@ import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
+import kotlin.random.Random.Default.nextInt
 import kotlin.system.exitProcess
 
 operator fun Regex.contains(text: CharSequence): Boolean = this.matches(text)
@@ -37,6 +38,14 @@ fun interpret(server: Server) {
         var command: String?
         command = input.nextLine()
         when (command) {
+            "register many" -> {
+                val o = (5..10).random()
+                for (user: Int in 1..o) {
+                    val c = Client()
+                    clients.add(c)
+                    c.dispatchRegisterEvent(server)
+                }
+            }
             "new" -> {
                 val c = Client()
                 clients.add(c)
@@ -44,6 +53,14 @@ fun interpret(server: Server) {
             }
             "selected" -> {
                 println(selected)
+            }
+            in Regex("^new\\s\\d+") -> {
+                val howMany = command.split(" ")[1].toInt()
+                for (user: Int in 1..howMany) {
+                    val c = Client()
+                    clients.add(c)
+                    c.dispatchRegisterEvent(server)
+                }
             }
             in Regex("^use\\s\\d+") -> {
                 val index = command.split(" ")[1].toInt()

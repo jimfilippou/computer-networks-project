@@ -28,6 +28,7 @@ class Client(var id: Int = -1) : Serializable {
 
     val following: MutableList<Int> = mutableListOf<Int>()
     val followers: MutableList<Int> = mutableListOf<Int>()
+    val followRequests: MutableList<FollowRequest> = mutableListOf<FollowRequest>()
     private val factory: PacketFactory = PacketFactory()
 
     fun dispatchFollowEvent(followerID: Int, destination: Server, callback: (success: Any?) -> Unit) {

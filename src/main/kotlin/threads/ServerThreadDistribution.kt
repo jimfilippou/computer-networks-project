@@ -10,13 +10,11 @@ import aliases.fup
 import aliases.rp
 import aliases.uip
 import enums.PacketType
+import enums.RequestStatus
 import factories.PacketFactory
 import helpers.Logger
 import models.*
-import models.packets.FollowUserPacket
-import models.packets.ListUsersPacket
-import models.packets.RegistrationPacket
-import models.packets.UploadImagePacket
+import models.packets.*
 import java.io.File
 import java.io.ObjectOutputStream
 
@@ -79,7 +77,7 @@ class ServerThreadDistribution(
             is ListUsersPacket -> {
                 Logger.debug("Received user list event from -> ${(packet.payload as ListUsersPacket.ListUsersPayload).sender}")
                 val toSend = factory.makePacket(PacketType.LIST_USER_IDS)
-                var arr: MutableList<Int> = mutableListOf<Int>()
+                val arr: MutableList<Int> = mutableListOf()
                 for ((_, value) in server.registeredUsers) {
                     arr.add(value.id)
                 }
@@ -96,11 +94,15 @@ class ServerThreadDistribution(
                 } else {
                     val sender: Client? = this.server.registeredUsers[((packet.payload as fup).sender as Client).id]
                     val toBeFollowed: Int? = (packet.payload as fup).uid
+                    if (sender == null) {
+                        Logger.warn("Sender is null, this is not supposed to happen!")
+                        return
+                    }
                     if (toBeFollowed != null) {
-                        sender?.following?.add(toBeFollowed)
-                        Logger.debug("$sender is now following user with ID: $toBeFollowed")
-                        this.server.registeredUsers[toBeFollowed]?.followers?.add((sender as Client).id)
-                        // todo: persist to file storage
+                        val req = FollowRequest(sender, RequestStatus.PENDING)
+                        val toFollow: Client = (this.server.registeredUsers[toBeFollowed] as Client)
+                        toFollow.followRequests.add(req)
+                        replyTo.writeObject("[Server] You requested to follow $toFollow, hopefully he/she will accept :)\n")
                     }
                 }
                 replyTo.writeObject(toSend)
