@@ -12,13 +12,13 @@ import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
-import kotlin.random.Random.Default.nextInt
 import kotlin.system.exitProcess
 
 operator fun Regex.contains(text: CharSequence): Boolean = this.matches(text)
 
 /**
  * CLI tool to manage clients (EXPERIMENTAL)
+ *
  * This chunk of code is ugly, intentionally
  *
  * @param server the server to operate on

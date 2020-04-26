@@ -7,7 +7,10 @@
 package enums
 
 /**
- * The packet enumeration.
+ * The packet enumeration
+ *
+ * Contains the type of each packet which correspond to a specific action within the application
+ *
  * @since 0.0.2
  */
 enum class PacketType {
