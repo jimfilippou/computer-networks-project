@@ -7,11 +7,13 @@
 package helpers
 
 import aliases.fup
+import aliases.gfrp
 import aliases.lup
 import aliases.rp
 import interfaces.Packet
 import models.*
 import models.packets.FollowUserPacket
+import models.packets.GetFollowRequestsPacket
 import models.packets.ListUsersPacket
 import models.packets.RegistrationPacket
 import java.io.ObjectInputStream
@@ -29,10 +31,10 @@ import java.net.Socket
  * @since 0.0.4
  */
 fun sendToServer(
-    payload: Packet,
-    sender: Client,
-    receiver: Server,
-    callback: ((data: Any?) -> Unit)? = null
+        payload: Packet,
+        sender: Client,
+        receiver: Server,
+        callback: ((data: Any?) -> Unit)? = null
 ): Unit {
 
     try {
@@ -49,7 +51,7 @@ fun sendToServer(
             is RegistrationPacket -> {
                 sender.id = (response.payload as rp).id
                 Logger.debug(
-                    "Client ID is set to ${(response.payload as rp).id} from ${(response.payload as rp).sender}"
+                        "Client ID is set to ${(response.payload as rp).id} from ${(response.payload as rp).sender}"
                 )
                 callback?.invoke(null)
             }
@@ -62,6 +64,9 @@ fun sendToServer(
             }
             is ListUsersPacket -> {
                 callback?.invoke((response.payload as lup).userIDs)
+            }
+            is GetFollowRequestsPacket -> {
+                callback?.invoke(((response.payload) as gfrp).r)
             }
             else -> print(response)
         }

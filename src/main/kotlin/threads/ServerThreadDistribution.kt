@@ -7,6 +7,7 @@
 package threads
 
 import aliases.fup
+import aliases.gfrp
 import aliases.rp
 import aliases.uip
 import enums.PacketType
@@ -31,10 +32,10 @@ import java.io.ObjectOutputStream
  * @since 1.0.1
  */
 class ServerThreadDistribution(
-    private val server: Server,
-    private val packet: Any,
-    private val replyTo: ObjectOutputStream,
-    private val callback: () -> Unit
+        private val server: Server,
+        private val packet: Any,
+        private val replyTo: ObjectOutputStream,
+        private val callback: () -> Unit
 ) : Thread() {
 
     private val factory: PacketFactory = PacketFactory()
@@ -69,8 +70,8 @@ class ServerThreadDistribution(
             }
             is UploadImagePacket -> {
                 Logger.debug(
-                    "Received image upload event from -> ${(packet.payload as uip).sender}\n " +
-                            "Uploaded: ${(packet.payload as uip).image}"
+                        "Received image upload event from -> ${(packet.payload as uip).sender}\n " +
+                                "Uploaded: ${(packet.payload as uip).image}"
                 )
                 //  ¯\_(ツ)_/¯
             }
@@ -87,7 +88,7 @@ class ServerThreadDistribution(
             is FollowUserPacket -> {
                 Logger.debug("Follow requested, ${(packet.payload as fup).sender} wants to follow user with ID: ${(packet.payload as fup).uid}")
                 val toSend = factory.makePacket(PacketType.FOLLOW_USER)
-                toSend.payload = FollowUserPacket.FollowUserPayload(server, success = true)
+                toSend.payload = fup(server, success = true)
                 if (((packet.payload as fup).sender as Client).id == (packet.payload as fup).uid) {
                     Logger.warn("You can't follow yourself :P")
                     (toSend.payload as fup).success = false
@@ -105,6 +106,13 @@ class ServerThreadDistribution(
                         replyTo.writeObject("[Server] You requested to follow $toFollow, hopefully he/she will accept :)\n")
                     }
                 }
+                replyTo.writeObject(toSend)
+            }
+            is GetFollowRequestsPacket -> {
+                Logger.debug("User ${(packet.payload as gfrp).sender} requested to see his/her followers.")
+                val user = this.server.registeredUsers[(((packet.payload as gfrp).sender) as Client).id] as Client
+                val toSend = factory.makePacket(PacketType.GET_FOLLOW_REQUESTS)
+                toSend.payload = gfrp(this.server, user.followRequests)
                 replyTo.writeObject(toSend)
             }
         }

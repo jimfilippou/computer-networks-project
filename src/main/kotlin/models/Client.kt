@@ -9,10 +9,7 @@ package models
 import enums.PacketType
 import factories.PacketFactory
 import helpers.sendToServer
-import models.packets.FollowUserPacket
-import models.packets.ListUsersPacket
-import models.packets.RegistrationPacket
-import models.packets.UploadImagePacket
+import models.packets.*
 import java.io.Serializable
 
 /**
@@ -53,6 +50,12 @@ class Client(var id: Int = -1) : Serializable {
         val packet: ListUsersPacket = this.factory.makePacket(PacketType.LIST_USER_IDS) as ListUsersPacket
         packet.payload = ListUsersPacket.ListUsersPayload(this)
         sendToServer(packet, this, destination, callback)
+    }
+
+    fun dispatchGetFollowRequestsEvent(destination: Server, callback: (requests: Any?) -> Unit) {
+        val packet: GetFollowRequestsPacket = this.factory.makePacket(PacketType.GET_FOLLOW_REQUESTS) as GetFollowRequestsPacket
+        packet.payload = GetFollowRequestsPacket.GetFollowRequestsPayload(this)
+        sendToServer(packet, this, destination,  callback)
     }
 
     companion object {

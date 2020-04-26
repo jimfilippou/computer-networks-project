@@ -82,6 +82,12 @@ fun interpret(server: Server) {
                     }
                 }
             }
+            "show requests" -> {
+                if (selected == null) continue@loop
+                selected.dispatchGetFollowRequestsEvent(server) { results ->
+                    println(results)
+                }
+            }
             "register" -> {
                 if (selected == null) continue@loop
                 selected.dispatchRegisterEvent(server)

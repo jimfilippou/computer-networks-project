@@ -18,4 +18,5 @@ Various helpers used across the entire project
 | remote list     | Lists all users from the **server**                                               |
 | upload          | Prompts user to upload photo or post                                              |
 | follow <n: Int> | Sends follow request to user with **remote** ID of n                              |
+| show requests   | Shows follow requests to user  (stored in the server only)                        |
 ```

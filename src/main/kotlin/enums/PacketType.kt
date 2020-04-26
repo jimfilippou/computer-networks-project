@@ -18,6 +18,7 @@ enum class PacketType {
     REGISTRATION,
     UPLOAD_IMAGE,
     LIST_USER_IDS,
-    FOLLOW_USER
+    FOLLOW_USER,
+    GET_FOLLOW_REQUESTS
 
 }

@@ -6,13 +6,11 @@
 
 package aliases
 
-import models.packets.FollowUserPacket
-import models.packets.ListUsersPacket
-import models.packets.RegistrationPacket
-import models.packets.UploadImagePacket
+import models.packets.*
 
 
 typealias rp = RegistrationPacket.RegistrationPayload
 typealias lup = ListUsersPacket.ListUsersPayload
 typealias uip = UploadImagePacket.UploadImagePayload
 typealias fup = FollowUserPacket.FollowUserPayload
+typealias gfrp = GetFollowRequestsPacket.GetFollowRequestsPayload

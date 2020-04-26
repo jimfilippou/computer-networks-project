@@ -8,10 +8,7 @@ package factories
 
 import enums.PacketType
 import interfaces.Packet
-import models.packets.FollowUserPacket
-import models.packets.ListUsersPacket
-import models.packets.RegistrationPacket
-import models.packets.UploadImagePacket
+import models.packets.*
 import java.io.Serializable
 
 /**
@@ -30,6 +27,7 @@ class PacketFactory : Serializable {
             PacketType.UPLOAD_IMAGE -> UploadImagePacket()
             PacketType.LIST_USER_IDS -> ListUsersPacket()
             PacketType.FOLLOW_USER -> FollowUserPacket()
+            PacketType.GET_FOLLOW_REQUESTS -> GetFollowRequestsPacket()
             else -> throw Exception("Type is not provided for the factory!")
         }
     }
