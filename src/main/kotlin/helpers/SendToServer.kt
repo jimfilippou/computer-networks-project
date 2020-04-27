@@ -6,11 +6,9 @@
 
 package helpers
 
-import aliases.fup
-import aliases.gfrp
-import aliases.lup
-import aliases.rp
+import aliases.*
 import interfaces.Packet
+import main.models.packets.RejectFollowRequestPacket
 import models.*
 import models.packets.FollowUserPacket
 import models.packets.GetFollowRequestsPacket
@@ -66,7 +64,10 @@ fun sendToServer(
                 callback?.invoke((response.payload as lup).userIDs)
             }
             is GetFollowRequestsPacket -> {
-                callback?.invoke(((response.payload) as gfrp).r)
+                callback?.invoke((response.payload as gfrp).r)
+            }
+            is RejectFollowRequestPacket -> {
+                callback?.invoke((response.payload as rfrp).success)
             }
             else -> print(response)
         }

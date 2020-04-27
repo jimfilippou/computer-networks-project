@@ -63,7 +63,7 @@ fun interpret(server: Server) {
                 }
             }
             in Regex("^use\\s\\d+") -> {
-                val index = command.split(" ")[1].toInt()
+                val index = command.split(" ")[1].toInt() - 1
                 try {
                     selected = clients[index]
                 } catch (err: IndexOutOfBoundsException) {
@@ -86,6 +86,15 @@ fun interpret(server: Server) {
                 if (selected == null) continue@loop
                 selected.dispatchGetFollowRequestsEvent(server) { results ->
                     println(results)
+                }
+            }
+            in Regex("^reject\\s\\d+") -> {
+                if (selected == null) continue@loop
+                val index = command.split(" ")[1].toInt()
+                selected.dispatchRejectFollowRequestEvent(server, index) { success ->
+                    if (success == true) {
+                        println("You successfully rejected the follow event!")
+                    }
                 }
             }
             "register" -> {

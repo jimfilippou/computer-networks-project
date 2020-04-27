@@ -6,18 +6,17 @@
 
 package threads
 
-import aliases.fup
-import aliases.gfrp
-import aliases.rp
-import aliases.uip
+import aliases.*
 import enums.PacketType
 import enums.RequestStatus
 import factories.PacketFactory
 import helpers.Logger
+import main.models.packets.RejectFollowRequestPacket
 import models.*
 import models.packets.*
 import java.io.File
 import java.io.ObjectOutputStream
+import java.lang.Exception
 
 /**
  * A slave thread, to handle each assigned request
@@ -114,6 +113,20 @@ class ServerThreadDistribution(
                 val toSend = factory.makePacket(PacketType.GET_FOLLOW_REQUESTS)
                 toSend.payload = gfrp(this.server, user.followRequests)
                 replyTo.writeObject(toSend)
+            }
+            is RejectFollowRequestPacket -> {
+                val response = factory.makePacket(PacketType.REJECT_FOLLOW_REQUEST)
+                response.payload = rfrp(this.server, null, true)
+                try {
+                    val sender = (packet.payload as rfrp).sender
+                    Logger.debug("User $sender wants to decline request with ID: ${((packet.payload as rfrp).requestID)}")
+                    val user: Client? = this.server.registeredUsers[(((packet.payload as rfrp).sender) as Client).id]
+                    val found = user?.followRequests?.find { it.id == (packet.payload as rfrp).requestID }
+                    found?.status = RequestStatus.REJECTED
+                } catch (err: Exception) {
+                    ((response.payload) as rfrp).success = false
+                }
+                replyTo.writeObject(response)
             }
         }
         synchronized(this.server.slaves) {

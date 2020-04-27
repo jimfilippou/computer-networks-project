@@ -10,4 +10,8 @@ import enums.RequestStatus
 import java.io.Serializable
 
 
-data class FollowRequest(var from: Client, var status: RequestStatus): Serializable {}
+data class FollowRequest(
+        var from: Client,
+        var status: RequestStatus,
+        var id: Number = (1..Int.MAX_VALUE).random()
+) : Serializable {}

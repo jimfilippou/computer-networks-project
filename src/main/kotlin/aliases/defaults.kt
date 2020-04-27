@@ -6,6 +6,7 @@
 
 package aliases
 
+import main.models.packets.RejectFollowRequestPacket
 import models.packets.*
 
 
@@ -14,3 +15,4 @@ typealias lup = ListUsersPacket.ListUsersPayload
 typealias uip = UploadImagePacket.UploadImagePayload
 typealias fup = FollowUserPacket.FollowUserPayload
 typealias gfrp = GetFollowRequestsPacket.GetFollowRequestsPayload
+typealias rfrp = RejectFollowRequestPacket.RejectFollowRequestPayload

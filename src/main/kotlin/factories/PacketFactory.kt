@@ -8,6 +8,7 @@ package factories
 
 import enums.PacketType
 import interfaces.Packet
+import main.models.packets.RejectFollowRequestPacket
 import models.packets.*
 import java.io.Serializable
 
@@ -28,6 +29,7 @@ class PacketFactory : Serializable {
             PacketType.LIST_USER_IDS -> ListUsersPacket()
             PacketType.FOLLOW_USER -> FollowUserPacket()
             PacketType.GET_FOLLOW_REQUESTS -> GetFollowRequestsPacket()
+            PacketType.REJECT_FOLLOW_REQUEST -> RejectFollowRequestPacket()
             else -> throw Exception("Type is not provided for the factory!")
         }
     }
