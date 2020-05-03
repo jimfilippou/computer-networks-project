@@ -7,12 +7,14 @@
 package main.models.packets
 
 import interfaces.Packet
+import models.FollowRequest
 import java.io.Serializable
 
-class RejectFollowRequestPacket : Serializable, Packet {
+class AcceptFollowRequestPacket : Serializable, Packet {
 
-    data class RejectFollowRequestPayload(val sender: Serializable, val requestID: Int?, var success: Boolean = false) : Serializable
+    data class AcceptFollowRequestPayload(val sender: Serializable, val requestID: Int?) : Serializable
 
     override var payload: Any? = null
+    override var response: Any? = null
 
 }

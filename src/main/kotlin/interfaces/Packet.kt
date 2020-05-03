@@ -14,5 +14,6 @@ package interfaces
 interface Packet {
 
     var payload: Any?
+    var response: Any?
 
 }

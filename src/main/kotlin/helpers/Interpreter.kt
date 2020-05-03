@@ -97,6 +97,15 @@ fun interpret(server: Server) {
                     }
                 }
             }
+            in Regex("^accept\\s\\d+") -> {
+                if (selected == null) continue@loop
+                val index = command.split(" ")[1].toInt()
+                selected.dispatchAcceptFollowRequestEvent(server, index) { success ->
+                    if (success == true) {
+                        println("You successfully accepted the follow event!")
+                    }
+                }
+            }
             "register" -> {
                 if (selected == null) continue@loop
                 selected.dispatchRegisterEvent(server)

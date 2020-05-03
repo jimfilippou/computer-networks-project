@@ -20,6 +20,7 @@ class RegistrationPacket: Serializable, Packet {
     data class RegistrationPayload(val sender: Any, val id: Int = -1) : Serializable
 
     override var payload: Any? = null
+    override var response: Any? = null
 
     override fun toString(): String {
         return "RegistrationPacket(sender=${(payload as rp).sender}, id=${(payload as rp).id})"

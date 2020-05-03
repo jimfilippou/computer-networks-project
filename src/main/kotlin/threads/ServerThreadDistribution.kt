@@ -11,6 +11,7 @@ import enums.PacketType
 import enums.RequestStatus
 import factories.PacketFactory
 import helpers.Logger
+import main.models.packets.AcceptFollowRequestPacket
 import main.models.packets.RejectFollowRequestPacket
 import models.*
 import models.packets.*
@@ -125,6 +126,19 @@ class ServerThreadDistribution(
                     found?.status = RequestStatus.REJECTED
                 } catch (err: Exception) {
                     ((response.payload) as rfrp).success = false
+                }
+                replyTo.writeObject(response)
+            }
+            is AcceptFollowRequestPacket -> {
+                val response = factory.makePacket(PacketType.ACCEPT_FOLLOW_REQUEST)
+                response.response = true
+                val sender = (packet.payload as afrp).sender
+                Logger.debug("User $sender wants to accept request with ID: ${((packet.payload as afrp).requestID)}")
+                val user: Client? = this.server.registeredUsers[(((packet.payload as afrp).sender) as Client).id]
+                val found = user?.followRequests?.find { it.id == (packet.payload as afrp).requestID }
+                found?.status = RequestStatus.ACCEPTED
+                if (found != null) {
+                    this.server.acceptedRequest(sender, found)
                 }
                 replyTo.writeObject(response)
             }

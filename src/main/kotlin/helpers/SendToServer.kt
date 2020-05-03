@@ -8,6 +8,7 @@ package helpers
 
 import aliases.*
 import interfaces.Packet
+import main.models.packets.AcceptFollowRequestPacket
 import main.models.packets.RejectFollowRequestPacket
 import models.*
 import models.packets.FollowUserPacket
@@ -68,6 +69,9 @@ fun sendToServer(
             }
             is RejectFollowRequestPacket -> {
                 callback?.invoke((response.payload as rfrp).success)
+            }
+            is AcceptFollowRequestPacket -> {
+                callback?.invoke(response.response)
             }
             else -> print(response)
         }

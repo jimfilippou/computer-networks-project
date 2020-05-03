@@ -19,10 +19,7 @@ class UploadImagePacket : Serializable, Packet {
     data class UploadImagePayload(val sender: Client, val image: String) : Serializable
 
     override var payload: Any? = null
-
-    companion object {
-        private const val serialVersionUID = 578515438738407941L
-    }
+    override var response: Any? = null
 
 }
 

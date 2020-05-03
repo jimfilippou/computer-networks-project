@@ -9,6 +9,7 @@ package models
 import enums.PacketType
 import factories.PacketFactory
 import helpers.sendToServer
+import main.models.packets.AcceptFollowRequestPacket
 import main.models.packets.RejectFollowRequestPacket
 import models.packets.*
 import java.io.Serializable
@@ -56,12 +57,18 @@ class Client(var id: Int = -1) : Serializable {
     fun dispatchGetFollowRequestsEvent(destination: Server, callback: (requests: Any?) -> Unit) {
         val packet: GetFollowRequestsPacket = this.factory.makePacket(PacketType.GET_FOLLOW_REQUESTS) as GetFollowRequestsPacket
         packet.payload = GetFollowRequestsPacket.GetFollowRequestsPayload(this)
-        sendToServer(packet, this, destination,  callback)
+        sendToServer(packet, this, destination, callback)
     }
 
     fun dispatchRejectFollowRequestEvent(destination: Server, requestID: Int, callback: (success: Any?) -> Unit) {
         val packet: RejectFollowRequestPacket = this.factory.makePacket(PacketType.REJECT_FOLLOW_REQUEST) as RejectFollowRequestPacket
         packet.payload = RejectFollowRequestPacket.RejectFollowRequestPayload(this, requestID)
+        sendToServer(packet, this, destination, callback)
+    }
+
+    fun dispatchAcceptFollowRequestEvent(destination: Server, requestID: Int, callback: (success: Any?) -> Unit) {
+        val packet: AcceptFollowRequestPacket = this.factory.makePacket(PacketType.ACCEPT_FOLLOW_REQUEST) as AcceptFollowRequestPacket
+        packet.payload = AcceptFollowRequestPacket.AcceptFollowRequestPayload(this, requestID)
         sendToServer(packet, this, destination, callback)
     }
 

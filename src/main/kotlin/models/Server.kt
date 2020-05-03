@@ -104,8 +104,15 @@ class Server(var ip: String, var port: Int) : Serializable {
 
     }
 
-    override fun toString(): String {
-        return "The lonely server"
+    @Throws
+    fun acceptedRequest(sender: Serializable, found: FollowRequest) {
+        // Update in memory
+        val user = this.registeredUsers[(sender as Client).id]
+        val targ = this.registeredUsers[found.id]
+        user?.following?.add(found.id as Int)
+        this.registeredUsers[targ?.id]?.followers?.add(found.from.id)
+        // Update in file
+        // todo update the file!
     }
 
 }

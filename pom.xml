@@ -72,7 +72,6 @@
                         <include>src/main/kotlin/factories/factories.md</include>
                         <include>src/main/kotlin/helpers/helpers.md</include>
                         <include>src/main/kotlin/interfaces/interfaces.md</include>
-                        <include>src/main/kotlin/models/models.md</include>
                         <include>src/main/kotlin/threads/threads.md</include>
                     </includes>
                     <skipEmptyPackages>true</skipEmptyPackages>

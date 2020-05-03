@@ -18,6 +18,7 @@ class ListUsersPacket: Serializable, Packet {
     data class ListUsersPayload(val sender: Serializable, val userIDs: MutableList<Int>? = null): Serializable
 
     override var payload: Any? = null
+    override var response: Any? = null
 
     companion object {
         private const val serialVersionUID = 578515438738407941L

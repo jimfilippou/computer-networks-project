@@ -19,6 +19,7 @@ class FollowUserPacket : Serializable, Packet {
     data class FollowUserPayload(val sender: Any, val uid: Int? = null, var success: Boolean? = false) : Serializable
 
     override var payload: Any? = null
+    override var response: Any? = null
 
     override fun toString(): String {
         payload = payload as fup
