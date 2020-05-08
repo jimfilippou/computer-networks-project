@@ -1,7 +1,6 @@
 package models.packets
 
 import interfaces.Packet
-import models.Client
 import models.FollowRequest
 import java.io.Serializable
 

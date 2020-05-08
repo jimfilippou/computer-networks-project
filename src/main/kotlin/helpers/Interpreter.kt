@@ -6,7 +6,9 @@
 
 package helpers
 
+import enums.PostType
 import models.Client
+import models.Post
 import models.Server
 import java.io.*
 import java.nio.file.Files
@@ -137,12 +139,14 @@ fun interpret(server: Server) {
                         print("This is not supported YET")
                     }
                     2 -> {
-                        print("Give absolute path of the image you want to upload and the name: ")
+                        print("Give absolute path of the image you want to upload, the name and the description: ")
                         val p = Scanner(System.`in`)
                         val path = p.next()
                         val name = p.next()
+                        val desc = p.next()
                         copyFileUsingStream(File(path), File("storage/c${selected.id}/$name"))
-                        selected.dispatchUploadEvent(name, server)
+                        val post = Post(selected, PostType.MULTIMEDIA, name, desc)
+                        selected.dispatchUploadEvent(server, post)
                     }
                     else -> print("Unrecognized command")
                 }

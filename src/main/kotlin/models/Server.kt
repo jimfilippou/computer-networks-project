@@ -7,8 +7,11 @@
 package models
 
 import helpers.Logger
+import sun.tools.tree.CastExpression
 import java.io.*
 import java.nio.channels.OverlappingFileLockException
+import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
@@ -22,8 +25,8 @@ class Server(var ip: String, var port: Int) : Serializable {
     var slaves: Int = 0
     val maxSlaves: Int = 7
     var counter: Int = 0
-    val registeredUsers: HashMap<Int, Client> = hashMapOf<Int, Client>()
-    val posts: HashMap<Int, Post> = hashMapOf<Int, Post>()
+    val registeredUsers: HashMap<Int, Client> = hashMapOf()
+    val posts: HashMap<Int, MutableList<Post>> = hashMapOf()
 
     /**
      * Sets up the server storage files
@@ -104,15 +107,19 @@ class Server(var ip: String, var port: Int) : Serializable {
 
     }
 
-    @Throws
+    @Throws(ClassCastException::class)
     fun acceptedRequest(sender: Serializable, found: FollowRequest) {
         // Update in memory
         val user = this.registeredUsers[(sender as Client).id]
         val targ = this.registeredUsers[found.id]
         user?.following?.add(found.id as Int)
         this.registeredUsers[targ?.id]?.followers?.add(found.from.id)
-        // Update in file
-        // todo update the file!
+//        Update in file
+//        val props: Properties = Properties()
+//        for (entry in this.registeredUsers) {
+//            props[entry.key] = entry.value.id.toString()
+//        }
+//        props.store(FileOutputStream("data.props"), null)
     }
 
 }

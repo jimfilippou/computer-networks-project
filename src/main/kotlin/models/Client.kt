@@ -9,8 +9,6 @@ package models
 import enums.PacketType
 import factories.PacketFactory
 import helpers.sendToServer
-import main.models.packets.AcceptFollowRequestPacket
-import main.models.packets.RejectFollowRequestPacket
 import models.packets.*
 import java.io.Serializable
 
@@ -42,9 +40,9 @@ class Client(var id: Int = -1) : Serializable {
         sendToServer(packet, this, destination)
     }
 
-    fun dispatchUploadEvent(image: String, destination: Server) {
-        val packet: UploadImagePacket = this.factory.makePacket(PacketType.UPLOAD_IMAGE) as UploadImagePacket
-        packet.payload = UploadImagePacket.UploadImagePayload(this, image)
+    fun dispatchUploadEvent(destination: Server, post: Post) {
+        val packet: UploadPostPacket = this.factory.makePacket(PacketType.UPLOAD_IMAGE) as UploadPostPacket
+        packet.payload = UploadPostPacket.UploadPostPayload(this, post)
         sendToServer(packet, this, destination)
     }
 

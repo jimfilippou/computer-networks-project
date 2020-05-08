@@ -4,7 +4,7 @@
  * File: RejectFollowRequest.kt
  */
 
-package main.models.packets
+package models.packets
 
 import interfaces.Packet
 import models.FollowRequest

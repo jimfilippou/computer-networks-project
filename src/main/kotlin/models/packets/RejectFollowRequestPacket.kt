@@ -4,7 +4,7 @@
  * File: RejectFollowRequest.kt
  */
 
-package main.models.packets
+package models.packets
 
 import interfaces.Packet
 import java.io.Serializable
@@ -14,5 +14,6 @@ class RejectFollowRequestPacket : Serializable, Packet {
     data class RejectFollowRequestPayload(val sender: Serializable, val requestID: Int?, var success: Boolean = false) : Serializable
 
     override var payload: Any? = null
+    override var response: Any? = null
 
 }

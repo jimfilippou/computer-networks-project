@@ -8,13 +8,8 @@ package helpers
 
 import aliases.*
 import interfaces.Packet
-import main.models.packets.AcceptFollowRequestPacket
-import main.models.packets.RejectFollowRequestPacket
 import models.*
-import models.packets.FollowUserPacket
-import models.packets.GetFollowRequestsPacket
-import models.packets.ListUsersPacket
-import models.packets.RegistrationPacket
+import models.packets.*
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.ConnectException

@@ -11,8 +11,6 @@ import enums.PacketType
 import enums.RequestStatus
 import factories.PacketFactory
 import helpers.Logger
-import main.models.packets.AcceptFollowRequestPacket
-import main.models.packets.RejectFollowRequestPacket
 import models.*
 import models.packets.*
 import java.io.File
@@ -67,13 +65,6 @@ class ServerThreadDistribution(
                 // too afraid to uncomment the following lines
                 // Logger.debug("Closing stream...")
                 // replyTo.close()
-            }
-            is UploadImagePacket -> {
-                Logger.debug(
-                        "Received image upload event from -> ${(packet.payload as uip).sender}\n " +
-                                "Uploaded: ${(packet.payload as uip).image}"
-                )
-                //  ¯\_(ツ)_/¯
             }
             is ListUsersPacket -> {
                 Logger.debug("Received user list event from -> ${(packet.payload as ListUsersPacket.ListUsersPayload).sender}")
@@ -141,6 +132,14 @@ class ServerThreadDistribution(
                     this.server.acceptedRequest(sender, found)
                 }
                 replyTo.writeObject(response)
+            }
+            is UploadPostPacket -> {
+                Logger.debug(
+                        "Received image upload event from -> ${(packet.payload as uip).sender}\n " +
+                                "Uploaded: ${(packet.payload as uip).post.image}"
+                )
+                this.server.posts[(packet.payload as uip).sender.id]?.add((packet.payload as uip).post)
+                replyTo.writeChars("Uploaded post!")
             }
         }
         synchronized(this.server.slaves) {

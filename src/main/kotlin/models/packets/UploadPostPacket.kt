@@ -8,15 +8,16 @@ package models.packets
 
 import interfaces.Packet
 import models.Client
+import models.Post
 import java.io.Serializable
 
 /**
  *
  * @since 0.0.3
  */
-class UploadImagePacket : Serializable, Packet {
+class UploadPostPacket : Serializable, Packet {
 
-    data class UploadImagePayload(val sender: Client, val image: String) : Serializable
+    data class UploadPostPayload(val sender: Client, val post: Post) : Serializable
 
     override var payload: Any? = null
     override var response: Any? = null
