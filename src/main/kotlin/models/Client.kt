@@ -19,7 +19,7 @@ import java.io.Serializable
  *
  * @property id optionally pass an ID if you want, defaults to -1
  * @constructor Creates a new *Client* instance
- * @since 0.0.4
+ * @since 1.2.1
  */
 class Client(var id: Int = -1) : Serializable {
 
@@ -40,10 +40,10 @@ class Client(var id: Int = -1) : Serializable {
         sendToServer(packet, this, destination)
     }
 
-    fun dispatchUploadEvent(destination: Server, post: Post) {
+    fun dispatchUploadEvent(destination: Server, post: Post, callback: (message: Any?) -> Unit) {
         val packet: UploadPostPacket = this.factory.makePacket(PacketType.UPLOAD_IMAGE) as UploadPostPacket
         packet.payload = UploadPostPacket.UploadPostPayload(this, post)
-        sendToServer(packet, this, destination)
+        sendToServer(packet, this, destination, callback)
     }
 
     fun dispatchListUsersEvent(destination: Server, callback: (usersIDs: Any?) -> Unit) {
@@ -70,8 +70,18 @@ class Client(var id: Int = -1) : Serializable {
         sendToServer(packet, this, destination, callback)
     }
 
+    fun dispatchShowPostOfXEvent(destination: Server, ID: Int, callback: (posts: Any?) -> Unit) {
+        val packet: ShowPostOfXPacket = this.factory.makePacket(PacketType.SHOW_POST_OF_X) as ShowPostOfXPacket
+        packet.payload = ShowPostOfXPacket.ShowPostOfXPacketPayload(this, ID)
+        sendToServer(packet, this, destination, callback)
+    }
+
     companion object {
         private const val serialVersionUID = 578515438738407941L
+    }
+
+    override fun toString(): String {
+        return "Client ${this.id} ☜(ˆ▿ˆc)"
     }
 
 }

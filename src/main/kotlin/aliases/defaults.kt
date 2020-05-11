@@ -16,3 +16,4 @@ typealias fup = FollowUserPacket.FollowUserPayload
 typealias gfrp = GetFollowRequestsPacket.GetFollowRequestsPayload
 typealias rfrp = RejectFollowRequestPacket.RejectFollowRequestPayload
 typealias afrp = AcceptFollowRequestPacket.AcceptFollowRequestPayload
+typealias x = ShowPostOfXPacket.ShowPostOfXPacketPayload

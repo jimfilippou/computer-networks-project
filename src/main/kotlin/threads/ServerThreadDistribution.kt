@@ -54,11 +54,13 @@ class ServerThreadDistribution(
                     val sender = (packet.payload as rp).sender as Client
                     this.server.registeredUsers[this.server.counter] = sender
                     this.server.insertUserToGraphWithLock(sender)
-                    Logger.debug("Creating directory \"c${this.server.counter}\" for user")
+                    Logger.debug("Creating directory \"c${this.server.counter}\" for user.")
                     this.createUserDirectory(this.server.counter)
                     val toSend = factory.makePacket(PacketType.REGISTRATION)
                     toSend.payload = RegistrationPacket.RegistrationPayload(server, this.server.counter)
-                    Logger.debug("Writing $toSend to socket: $replyTo")
+                    Logger.debug("Creating empty list of posts.")
+                    this.server.posts[this.server.counter] = mutableListOf()
+                    Logger.debug("Writing $toSend to socket: $replyTo.")
                     replyTo.writeObject(toSend)
                 }
                 // TODO: Investigate the closure of the stream
@@ -135,11 +137,25 @@ class ServerThreadDistribution(
             }
             is UploadPostPacket -> {
                 Logger.debug(
-                        "Received image upload event from -> ${(packet.payload as uip).sender}\n " +
+                        "Received upload event from -> ${(packet.payload as uip).sender}\n " +
                                 "Uploaded: ${(packet.payload as uip).post.image}"
                 )
                 this.server.posts[(packet.payload as uip).sender.id]?.add((packet.payload as uip).post)
                 replyTo.writeChars("Uploaded post!")
+            }
+            is ShowPostOfXPacket -> {
+                val sender = (packet.payload as x).sender
+                val uid = (packet.payload as x).id
+                Logger.debug("Received \"show post of X event\" from -> $sender X=$uid")
+                val resp = factory.makePacket(PacketType.SHOW_POST_OF_X)
+                if (uid == sender.id) {
+                    // Show my posts (no checks)
+                    resp.response = this.server.posts[sender.id]
+                } else {
+                    // todo: check permissions
+                    resp.response = this.server.posts[uid]
+                }
+                replyTo.writeObject(resp)
             }
         }
         synchronized(this.server.slaves) {

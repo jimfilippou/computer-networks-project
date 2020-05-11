@@ -27,7 +27,7 @@ operator fun Regex.contains(text: CharSequence): Boolean = this.matches(text)
  */
 fun interpret(server: Server) {
 
-    val clients: MutableList<Client> = mutableListOf<Client>()
+    val clients: MutableList<Client> = mutableListOf()
     var selected: Client? = null
 
     loop@ while (true) {
@@ -53,7 +53,7 @@ fun interpret(server: Server) {
                 clients.add(c)
                 println("A new client object was added to clients!\nClient: $c")
             }
-            "selected" -> {
+            "whoami" -> {
                 println(selected)
             }
             in Regex("^new\\s\\d+") -> {
@@ -86,9 +86,19 @@ fun interpret(server: Server) {
             }
             "show requests" -> {
                 if (selected == null) continue@loop
-                selected.dispatchGetFollowRequestsEvent(server) { results ->
-                    println(results)
-                }
+                selected.dispatchGetFollowRequestsEvent(server, ::println)
+            }
+            "show my posts" -> {
+                if (selected == null) continue@loop
+                selected.dispatchShowPostOfXEvent(server, selected.id, ::println)
+            }
+            "comment on post" -> {
+                // den prolava, alla einai easy implementation
+            }
+            in Regex("^show posts of\\s\\d+") -> {
+                val index = command.split(" ")[1].toInt()
+                if (selected == null) continue@loop
+                selected.dispatchShowPostOfXEvent(server, index, ::println)
             }
             in Regex("^reject\\s\\d+") -> {
                 if (selected == null) continue@loop
@@ -136,7 +146,10 @@ fun interpret(server: Server) {
                 val i = Scanner(System.`in`)
                 when (i.nextInt()) {
                     1 -> {
-                        print("This is not supported YET")
+                        print("Enter the text you want to upload: ")
+                        val p = Scanner(System.`in`)
+                        val text = p.next()
+                        selected.dispatchUploadEvent(server, Post(selected, PostType.TEXT, null, text), ::print)
                     }
                     2 -> {
                         print("Give absolute path of the image you want to upload, the name and the description: ")
@@ -146,7 +159,7 @@ fun interpret(server: Server) {
                         val desc = p.next()
                         copyFileUsingStream(File(path), File("storage/c${selected.id}/$name"))
                         val post = Post(selected, PostType.MULTIMEDIA, name, desc)
-                        selected.dispatchUploadEvent(server, post)
+                        selected.dispatchUploadEvent(server, post, ::print)
                     }
                     else -> print("Unrecognized command")
                 }

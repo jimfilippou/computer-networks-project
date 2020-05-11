@@ -65,8 +65,8 @@ fun sendToServer(
             is RejectFollowRequestPacket -> {
                 callback?.invoke((response.payload as rfrp).success)
             }
-            is AcceptFollowRequestPacket -> {
-                callback?.invoke(response.response)
+            is AcceptFollowRequestPacket, is ShowPostOfXPacket -> {
+                callback?.invoke((response as Packet).response)
             }
             else -> print(response)
         }

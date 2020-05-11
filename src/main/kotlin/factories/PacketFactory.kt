@@ -29,6 +29,7 @@ class PacketFactory : Serializable {
             PacketType.REJECT_FOLLOW_REQUEST -> RejectFollowRequestPacket()
             PacketType.ACCEPT_FOLLOW_REQUEST -> AcceptFollowRequestPacket()
             PacketType.CREATE_POST -> CreatePostPacket()
+            PacketType.SHOW_POST_OF_X -> ShowPostOfXPacket()
             else -> throw Exception("Type is not provided for the factory!")
         }
     }

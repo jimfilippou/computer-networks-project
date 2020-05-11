@@ -7,10 +7,8 @@
 package models
 
 import helpers.Logger
-import sun.tools.tree.CastExpression
 import java.io.*
 import java.nio.channels.OverlappingFileLockException
-import java.util.*
 import kotlin.collections.HashMap
 
 
@@ -32,13 +30,15 @@ class Server(var ip: String, var port: Int) : Serializable {
      * Sets up the server storage files
      * @since 1.0.1
      */
-    fun setup(): Unit {
+    fun setup() {
         val storage = File("storage")
         if (storage.exists() && storage.isDirectory) {
             Logger.debug("Found old server storage files, deleting...")
-            val children: Array<String> = storage.list()
-            for (i in children.indices) {
-                File(storage, children[i]).delete()
+            val children: Array<String>? = storage.list()
+            if (children != null) {
+                for (i in children.indices) {
+                    File(storage, children[i]).delete()
+                }
             }
             Logger.success("Storage was successfully deleted.")
         }
@@ -48,7 +48,7 @@ class Server(var ip: String, var port: Int) : Serializable {
     /**
      * @since 1.0.1
      */
-    private fun prepareFiles(): Unit {
+    private fun prepareFiles() {
         Logger.debug("Creating new storage files...")
         File("storage").mkdir()
         File("storage/server").mkdir()
@@ -58,7 +58,7 @@ class Server(var ip: String, var port: Int) : Serializable {
     /**
      * @since 1.2.0
      */
-    private fun makeGraph(): Unit {
+    private fun makeGraph() {
         try {
             this.graph = File("storage/server/graph.txt")
             if (this.graph.createNewFile()) {
@@ -76,7 +76,7 @@ class Server(var ip: String, var port: Int) : Serializable {
     /**
      * @since 1.2.0
      */
-    fun insertUserToGraphWithLock(c: Client): Unit {
+    fun insertUserToGraphWithLock(c: Client) {
         try {
             val raf = RandomAccessFile(this.graph, "rw")
             val chan = raf.channel
@@ -121,5 +121,10 @@ class Server(var ip: String, var port: Int) : Serializable {
 //        }
 //        props.store(FileOutputStream("data.props"), null)
     }
+
+    override fun toString(): String {
+        return "Server (ง︡'-'︠)ง" // This is a face
+    }
+
 
 }
