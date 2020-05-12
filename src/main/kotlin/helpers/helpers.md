@@ -21,4 +21,6 @@ Various helpers used across the entire project
 | show requests       | Shows follow requests to user  (stored in the server only)                        |
 | reject <id: String> | Rejects follow request of ID: <id>                                                |
 | accept <id: String> | Accepts follow request of ID: <id>                                                |
+| show my posts       | Shows posts of currently logged in user                                           |
+| show posts of <id>  | Shows posts of user with ID: id                                                   |
 ```

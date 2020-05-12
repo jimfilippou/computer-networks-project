@@ -18,9 +18,11 @@ import java.net.Socket
  * The master thread of the application.
  *
  * This class handles connections and spawns proper threads for serving clients.
- * Each request is assigned to a slave thread, thus not executed by the master thread.
+ * Each request is assigned to a slave thread, thus not executed by the master thread. If the master thread spawns
+ * more than 7 threads, then the next request will have to wait. This class also handles the closures of streams in
+ * a robust way, using Kotlin callbacks.
  *
- * @property server the server instance to operate on
+ * @property server the server instance to operate on (contains mostly data)
  * @constructor Creates a new master thread which can be executed by the start() function.
  * @since 0.0.3
  */

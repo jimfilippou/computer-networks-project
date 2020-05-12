@@ -18,16 +18,18 @@ import java.io.ObjectOutputStream
 import java.lang.Exception
 
 /**
- * A slave thread, to handle each assigned request
+ * A slave thread, to handle each assigned request, assigned by the master thread
  *
  * This class, extends Java's *Thread* class and overrides the *run* function for custom functionality.
- * It works in a synchronized way to avoid issues caused by multithreading.
+ * It works in a synchronized way to avoid issues caused by multithreading, using the synchronized keyword.
+ * By default, this thread will not run when you initiate the class, you need to explicitly call "run()" in order
+ * to start the thread.
  *
  * @property server the server object to update information based on type of packet & permissions
  * @property packet the incoming packet of type Packet
  * @property replyTo the output stream to write results to
  * @constructor Creates a new slave thread which will handle the request that the master thread assigned to it
- * @since 1.0.1
+ * @since 2.0.0
  */
 class ServerThreadDistribution(
         private val server: Server,
@@ -164,6 +166,11 @@ class ServerThreadDistribution(
         callback.invoke()
     }
 
+    /**
+     * Creates a user directory with a prefix of c-x where x is the ID of the user
+     *
+     * @param uid the user ID is used to create a folder with a proper name
+     */
     private fun createUserDirectory(uid: Int) {
         File("storage/c$uid").mkdir()
     }
